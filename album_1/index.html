@@ -203,31 +203,30 @@
             }
         } */
 
-
-        #lyrics-wrap {
-            position: relative;
-            /* чтобы полоска внутри позиционировалась */
+        .lines li[data-type="pause"] {
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 8px 0;
         }
 
-        #pause-bar {
-            position: absolute;
-            bottom: 10px;
-            /* чуть снизу */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 6px;
+        .pause-bar {
+            width: 80%;
+            height: 4px;
             background: #555;
-            border-radius: 3px;
+            /* серый фон полоски */
+            border-radius: 2px;
             overflow: hidden;
-            display: none;
         }
 
-        #pause-bar-fill {
-            height: 100%;
+        .pause-fill {
             width: 0%;
+            height: 100%;
             background: white;
+            /* цвет прогресса */
             transition: width 0.1s linear;
+            /* плавная анимация */
         }
     </style>
 </head>
@@ -238,10 +237,6 @@
         <div class="lyrics-wrap">
             <div class="lines">
                 <ul class="lines-list" id="lines"></ul>
-            </div>
-
-            <div id="pause-bar">
-                <div id="pause-bar-fill"></div>
             </div>
         </div>
 

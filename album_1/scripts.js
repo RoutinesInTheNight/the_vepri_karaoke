@@ -25,14 +25,41 @@ fetch('song.srt')
 // --- Функция пересборки списка ---
 function rebuildLyrics() {
   linesList.innerHTML = '';
-  cues.forEach((c, i) => {
+
+  // Проходим по cues и вставляем паузы
+  for (let i = 0; i < cues.length; i++) {
+    const c = cues[i];
+
+    // Создаём обычную строку
     const li = document.createElement('li');
     li.textContent = c.text;
     li.dataset.index = i;
+    li.dataset.type = 'line';
     linesList.appendChild(li);
-  });
+
+    // Если есть следующий cue и между ними есть пауза
+    if (i < cues.length - 1) {
+      const nextC = cues[i + 1];
+      const pauseDuration = nextC.start - c.end;
+      if (pauseDuration > 0.05) { // если пауза > 50ms
+        const pauseLi = document.createElement('li');
+        pauseLi.dataset.type = 'pause';
+        pauseLi.dataset.start = c.end;
+        pauseLi.dataset.end = nextC.start;
+
+        // создаём полоску
+        pauseLi.innerHTML = `<div class="pause-bar">
+          <div class="pause-fill"></div>
+        </div>`;
+
+        linesList.appendChild(pauseLi);
+      }
+    }
+  }
+
   setActive(0);
 }
+
 
 // --- Вспомогательные функции ---
 function formatTime(t) {
@@ -66,44 +93,37 @@ audio.addEventListener('pause', () => {
 
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-  currentEl.textContent = formatTime(t);
-  const pct = (t / audio.duration) * 100;
-  progress.style.width = `${Math.max(0, Math.min(100, pct))}%`;
 
+  // обычная логика подсветки строчек
   let idx = cues.findIndex(c => t >= c.start && t < c.end);
-
   if (idx === -1) {
-    // время между строк
-    const nextCue = cues.find(c => c.start > t);
-    if (nextCue) {
-      idx = activeIndex; // оставляем текущую активной строчкой
-      showPauseBar(t, nextCue.start);
-    } else {
-      hidePauseBar();
-    }
-  } else {
-    hidePauseBar();
+    if (t >= cues[cues.length - 1].end) idx = cues.length - 1;
+    else if (t < cues[0].start) idx = 0;
   }
-
   if (idx !== activeIndex) setActive(idx);
+
+  // обновление пауз
+  document.querySelectorAll('#lines li[data-type="pause"]').forEach(pauseLi => {
+    const start = parseFloat(pauseLi.dataset.start);
+    const end = parseFloat(pauseLi.dataset.end);
+    const fill = pauseLi.querySelector('.pause-fill');
+    if (t >= start && t <= end) {
+      const pct = ((t - start) / (end - start)) * 100;
+      fill.style.width = pct + '%';
+
+      // центрируем полоску
+      const liHeight = pauseLi.offsetHeight;
+      const wrapRect = linesList.parentElement.getBoundingClientRect();
+      const centerY = wrapRect.height / 2;
+      const offset = centerY - (pauseLi.offsetTop + liHeight / 2);
+      linesList.style.transform = `translateY(${offset}px)`;
+    } else if (t < start) {
+      fill.style.width = '0%';
+    } else if (t > end) {
+      fill.style.width = '100%';
+    }
+  });
 });
-
-function showPauseBar(currentTime, nextTime) {
-  const bar = document.getElementById('pause-bar');
-  const fill = document.getElementById('pause-bar-fill');
-
-  const duration = Math.min(nextTime - currentTime, 4); // максимум 4 сек
-  const elapsed = currentTime - (nextTime - duration);
-  const pct = Math.max(0, Math.min(1, elapsed / duration)) * 100;
-
-  bar.style.display = 'block';
-  fill.style.width = pct + '%';
-}
-
-function hidePauseBar() {
-  const bar = document.getElementById('pause-bar');
-  bar.style.display = 'none';
-}
 
 
 // клик по таймлайну
