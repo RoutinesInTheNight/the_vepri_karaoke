@@ -70,14 +70,41 @@ audio.addEventListener('timeupdate', () => {
   const pct = (t / audio.duration) * 100;
   progress.style.width = `${Math.max(0, Math.min(100, pct))}%`;
 
-  // найти активную строчку
   let idx = cues.findIndex(c => t >= c.start && t < c.end);
+
   if (idx === -1) {
-    if (t >= cues[cues.length - 1].end) idx = cues.length - 1;
-    else if (t < cues[0].start) idx = 0;
+    // время между строк
+    const nextCue = cues.find(c => c.start > t);
+    if (nextCue) {
+      idx = activeIndex; // оставляем текущую активной строчкой
+      showPauseBar(t, nextCue.start);
+    } else {
+      hidePauseBar();
+    }
+  } else {
+    hidePauseBar();
   }
+
   if (idx !== activeIndex) setActive(idx);
 });
+
+function showPauseBar(currentTime, nextTime) {
+  const bar = document.getElementById('pause-bar');
+  const fill = document.getElementById('pause-bar-fill');
+
+  const duration = Math.min(nextTime - currentTime, 4); // максимум 4 сек
+  const elapsed = currentTime - (nextTime - duration);
+  const pct = Math.max(0, Math.min(1, elapsed / duration)) * 100;
+
+  bar.style.display = 'block';
+  fill.style.width = pct + '%';
+}
+
+function hidePauseBar() {
+  const bar = document.getElementById('pause-bar');
+  bar.style.display = 'none';
+}
+
 
 // клик по таймлайну
 timeline.addEventListener('click', e => {
