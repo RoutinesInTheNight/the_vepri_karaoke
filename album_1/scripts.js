@@ -85,51 +85,40 @@ audio.addEventListener('pause', () => {
   if (audio.currentTime === 0) app.classList.add('not-playing');
 });
 
+
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
 
   currentEl.textContent = formatTime(t);
-  const pct = (t / audio.duration) * 100;
-  progress.style.width = `${Math.max(0, Math.min(100, pct))}%`;
+  progress.style.width = `${Math.max(0, Math.min(100, (t / audio.duration) * 100))}%`;
 
-  // --- Обновляем активную строку ---
-  let idx = cues.findIndex(c => t >= c.start && t < c.end);
-  if (idx === -1) {
-    if (t >= cues[cues.length - 1].end) idx = cues.length - 1;
-    else if (t < cues[0].start) idx = 0;
+  // Найти активный li (строку или gap)
+  const lis = Array.from(linesList.children);
+  let activeLi = lis.find(li => {
+    const start = parseFloat(li.dataset.start);
+    const end = parseFloat(li.dataset.end);
+    return t >= start && t < end;
+  });
+
+  if (activeLi) {
+    const idx = lis.indexOf(activeLi);
+    if (idx !== activeIndex) setActive(idx);
   }
-  if (idx !== activeIndex) setActive(idx);
 
-  // --- Обновляем gaps ---
+  // Обновляем полоски gaps
   document.querySelectorAll('#lines li.gap').forEach(gap => {
     const start = parseFloat(gap.dataset.start);
     const end = parseFloat(gap.dataset.end);
-
+    const span = gap.querySelector('.fill');
     if (t >= start && t <= end) {
-      // вычисляем процент заполнения
       const pct = ((t - start) / (end - start)) * 100;
-      gap.querySelector('::after'); // псевдоэлемент нельзя напрямую
-      // вместо этого используем inline style через span
-      if (!gap.querySelector('.fill')) {
-        const span = document.createElement('span');
-        span.className = 'fill';
-        span.style.position = 'absolute';
-        span.style.top = '0';
-        span.style.left = '0';
-        span.style.height = '100%';
-        span.style.width = '0%';
-        span.style.background = 'white';
-        span.style.transition = 'width 0.1s linear';
-        gap.appendChild(span);
-      }
-      gap.querySelector('.fill').style.width = `${pct}%`;
+      if (span) span.style.width = `${pct}%`;
     } else {
-      // сброс, если не в тайминге
-      const span = gap.querySelector('.fill');
       if (span) span.style.width = '0%';
     }
   });
 });
+
 
 
 // клик по таймлайну
