@@ -44,7 +44,7 @@ function hapticFeedback(type, redirectUrl) {
   }
   setTimeout(() => {
     window.location.href = redirectUrl;
-  }, delay);
+  }, 0);
 }
 
 
