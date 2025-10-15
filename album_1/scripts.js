@@ -4,6 +4,7 @@ let cues = [];
 // Загружаем файл song.srt из той же папки
 fetch('song.srt')
   .then(r => r.text())
+  .then(text => console.log('SRT загружен, первые 100 символов:', text.slice(0,100)))
   .then(text => {
     cues = parseSRT(text);
     rebuildLyrics();
