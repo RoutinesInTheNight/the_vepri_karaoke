@@ -9,10 +9,6 @@ if (telegram.isVersionAtLeast("8.0")) {
 }
 
 
-
-
-
-
 function hapticFeedback(type, redirectUrl) {
   if (telegram.isVersionAtLeast("6.1") && (DEVICE_TYPE === 'android' || DEVICE_TYPE === 'ios')) {
     switch (type) {
@@ -47,33 +43,12 @@ function hapticFeedback(type, redirectUrl) {
         console.warn('Unknown haptic feedback type:', type);
     }
   }
-  if (redirectUrl && redirectUrl !== '#') {
-    const externalPrefixes = ['http://hdrezka', 'https://www.imdb', 'https://www.kinopoisk'];
-    const isExternal = externalPrefixes.some(prefix => redirectUrl.startsWith(prefix));
-    // Открытие ссылки вне телеграм / Переход на другую страницу с анимацией исчезновения
-    if (isExternal) {
-      telegram.openLink(redirectUrl);
-    } else {
-      const children = document.querySelectorAll('#movies-container > *');
-      const visibleChildren = Array.from(children).filter((child) => {
-        const rect = child.getBoundingClientRect();
-        return rect.top < window.innerHeight && rect.bottom > 0;
-      });
-      visibleChildren.forEach((child, index) => {
-        setTimeout(() => {
-          child.classList.remove('visible');
-        }, index * 25);
-      });
-      const delay = visibleChildren.length * 25;
-      setTimeout(() => {
-        window.location.href = redirectUrl;
-      }, delay);
-    }
-  }
+  setTimeout(() => {
+    window.location.href = redirectUrl;
+  }, delay);
 }
 
 
-// Определение границ безопасных зон
 const SafeAreaManager = (() => {
   let safeAreaTop = 0;
   let safeAreaBottom = 0;
@@ -113,49 +88,19 @@ const SafeAreaManager = (() => {
   return {
     init,
     getTotalSafeAreas,
-    onChange: null // Можно назначить слушатель изменений
+    onChange: null
   };
 })();
 
 
-
-
-
-// Выставление пддингов и маргинов в зависимости от безопасной зоны
 document.addEventListener('DOMContentLoaded', () => {
-  const bottomMenu = document.querySelector('.sorting');
-  const searchCollaps = document.querySelector('.search-collaps');
-  const searchTopCollaps = document.querySelector('.search-top-collaps');
-  const moviesContainer = document.getElementById('movies-container');
-  const keyboards = document.querySelector('.keyboards');
+  const albums = document.querySelector('.albums');
 
   SafeAreaManager.onChange = ({ top, bottom }) => {
     const bottomValue = bottom === 0 ? 'calc((100 / 428) * 8 * var(--vw))' : `${bottom}px`;
-    const topValue = top === 0 ? 'calc(2.5 * var(--vw))' : `${top}px`;
-    bottomMenu.style.paddingBottom = bottomValue;
-    keyboards.style.paddingBottom = bottom === 0 ? '0.5rem' : `${bottom * 2}px`;
+    const topValue = top === 0 ? 'calc(100 / 428 * 16 * var(--vw))' : `${top}px`;
 
-    if (bottom === 0) {
-      // searchTopCollaps.style.transform = 'translateY(calc(((100 / 428) * (32 + 32) * var(--vw) + 2.5 * var(--vw)) * 1))';
-      searchCollaps.style.marginBottom = `calc((100 / 428) * (125 + 8 + 8) * var(--vw))`;
-    } else {
-      // searchTopCollaps.style.transform = `translateY(calc((100 / 428) * (32 + 32 + ${top}) * -1 * var(--vw)))`;
-      searchCollaps.style.marginBottom = `calc((100 / 428) * (125 + 8 + ${bottom}) * var(--vw))`;
-    }
-
-    searchTopCollaps.style.marginTop = topValue;
-
-
-
-
-
-    moviesContainer.style.marginTop = topValue;
-    moviesContainer.style.marginBottom = bottom === 0 ? 'calc(0.5rem + 124.5px + 2.5vw)' : `calc(${bottom}px + 124.5px + 2.5vw)`
+    albums.style.marginTop = topValue
   };
   SafeAreaManager.init();
 });
-
-
-
-
-

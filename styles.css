@@ -39,16 +39,12 @@
 
 
 body {
-  background-color: gray;
+  background-color: black;
   color: #d5e1d3;
   font-family: 'Sf Pro Display Regular', Arial, sans-serif;
   overflow-x: hidden;
   margin: 0 auto;
   padding: 0;
-}
-
-html {
-  background-color: black;
 }
 
 
@@ -63,7 +59,7 @@ html {
   align-items: center;
   justify-content: space-between;
   width: 90%;
-  margin: calc(100 / 428 * 8 * var(--vw)) auto 0 auto;
+  margin: 0 auto calc(100 / 428 * 16 * var(--vw)) auto;
   border-radius: calc(100 / 428 * 16 * var(--vw));
   background-color: #2e3e2b;
   border: 1px solid #749C6C;
