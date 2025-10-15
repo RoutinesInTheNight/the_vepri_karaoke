@@ -88,7 +88,7 @@
             padding: 0;
             margin: 0;
             position: relative;
-            transition: transform .25s cubic-bezier(.2, .9, .3, 1)
+            transition: transform .5s cubic-bezier(.2, .9, .3, 1)
         }
 
         .lines-list li {
@@ -202,39 +202,6 @@
                 font-size: 12px
             }
         } */
-
-        #lines li.gap {
-            height: 20px;
-            /* можно регулировать */
-            background: #555;
-            /* серый фон */
-            position: relative;
-            overflow: hidden;
-            margin: 8px 0;
-            border-radius: 4px;
-        }
-
-        #lines li.gap::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 0%;
-            background: white;
-            transition: width linear;
-            /* анимация заполнения */
-        }
-
-        #lines li.gap .fill {
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 0%;
-            background: white;
-        }
     </style>
 </head>
 

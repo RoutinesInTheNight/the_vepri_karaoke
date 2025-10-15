@@ -87,46 +87,18 @@ audio.addEventListener('pause', () => {
 
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
+  currentEl.textContent = formatTime(t);
+  const pct = (t / audio.duration) * 100;
+  progress.style.width = `${Math.max(0, Math.min(100, pct))}%`;
 
-  // --- обычные строки ---
+  // найти активную строчку
   let idx = cues.findIndex(c => t >= c.start && t < c.end);
   if (idx === -1) {
-    if (t < cues[0].start) idx = 0;
-    else if (t > cues[cues.length - 1].end) idx = cues.length - 1;
+    if (t >= cues[cues.length - 1].end) idx = cues.length - 1;
+    else if (t < cues[0].start) idx = 0;
   }
   if (idx !== activeIndex) setActive(idx);
-
-  // --- gap-анимация ---
-  document.querySelectorAll('#lines li.gap').forEach(gap => {
-    const start = parseFloat(gap.dataset.start);
-    const end = parseFloat(gap.dataset.end);
-
-    if (t >= start && t <= end) {
-      const pct = ((t - start) / (end - start)) * 100;
-      let span = gap.querySelector('.fill');
-      if (!span) {
-        span = document.createElement('span');
-        span.className = 'fill';
-        Object.assign(span.style, {
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          height: '100%',
-          width: '0%',
-          background: 'white',
-          transition: 'width 0.1s linear'
-        });
-        gap.appendChild(span);
-      }
-      span.style.width = pct + '%';
-    } else {
-      const span = gap.querySelector('.fill');
-      if (span) span.style.width = '0%';
-    }
-  });
 });
-
-
 
 // клик по таймлайну
 timeline.addEventListener('click', e => {
