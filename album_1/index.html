@@ -238,17 +238,30 @@
     </div>
 
     <script>
-        // --- Demo SRT-like cues (you will later load a real .srt file) ---
-        const cues = [
-            { start: 0.0, end: 1.0, text: "" },
-            { start: 1.0, end: 2.0, text: "Сетевой нигилист, неутихающий гонор" },
-            { start: 2.0, end: 3.0, text: "Вторая строчка идёт следом за первой" },
-            { start: 3.0, end: 4.0, text: "Третья строчка, по центру она появится" },
-            { start: 4.0, end: 5.0, text: "Четвёртая строчка, немного позже" },
-            { start: 5.0, end: 6.0, text: "Пятая строчка — пример длинной фразы, она может переноситься" },
-            { start: 6.0, end: 7.0, text: "Ещё одна строка для теста" },
-            { start: 7.0, end: 8.0, text: "Финальная строка, пауза и конец" }
-        ];
+
+        let cues = [];
+
+        // Загружаем файл song.srt из той же папки
+        fetch('song.srt')
+            .then(r => r.text())
+            .then(text => {
+                cues = parseSRT(text);
+                rebuildLyrics();
+            })
+            .catch(err => console.error('Ошибка загрузки SRT:', err));
+
+        // пересобрать список строк
+        function rebuildLyrics() {
+            linesList.innerHTML = '';
+            cues.forEach((c, i) => {
+                const li = document.createElement('li');
+                li.textContent = c.text;
+                li.dataset.index = i;
+                linesList.appendChild(li);
+            });
+            setActive(null);
+        }
+
 
         // --- DOM ---
         const audio = document.getElementById('audio');
@@ -379,34 +392,30 @@
 
         // Optional: if you want to programmatically load SRT later, here's a tiny parser you can reuse
         function parseSRT(srtText) {
-            // returns array of {start, end, text}
-            const blocks = srtText.trim().split(/\n\n+/);
+            const blocks = srtText.trim().split(/\\n\\s*\\n+/);
             const out = [];
-            blocks.forEach(b => {
-                const lines = b.split(/\n/).map(l => l.trim()).filter(Boolean);
-                if (lines.length >= 2) {
-                    // first is index or cue number, second is timing
-                    const timing = lines.find(l => l.match(/\d{2}:\d{2}:\d{2},\d{3}/));
-                    if (!timing && lines[1]) {
-                        // sometimes index present
-                        const tline = lines[1];
-                        const m = tline.match(/(\d{2}:\d{2}:\d{2},\d{3})\s*-->\s * (\d{ 2}: \d{ 2}: \d{ 2}, \d{ 3}) /);
-            if (m) {
-                out.push({ start: toSeconds(m[1]), end: toSeconds(m[2]), text: lines.slice(2).join(' ') });
-            }
-        } else {
-            const m = lines[0].match(/(\d{2}:\d{2}:\d{2},\d{3})\s*-->\s*(\d{2}:\d{2}:\d{2},\d{3})/);
-            if (m) { out.push({ start: toSeconds(m[1]), end: toSeconds(m[2]), text: lines.slice(1).join(' ') }); }
-        }
-        }
-      });
-        return out;
 
-        function toSeconds(t) {
-            const p = t.split(/[:,]/).map(Number);
-            return p[0] * 3600 + p[1] * 60 + p[2] + (p[3] || 0) / 1000;
+            for (const block of blocks) {
+                const lines = block.split(/\\n/).map(l => l.trim()).filter(Boolean);
+                if (lines.length >= 2) {
+                    const timeLine = lines.find(l => l.includes('-->'));
+                    const match = timeLine && timeLine.match(/(\\d{2}:\\d{2}:\\d{2},\\d{3})\\s*-->\\s*(\\d{2}:\\d{2}:\\d{2},\\d{3})/);
+                    if (match) {
+                        const start = toSeconds(match[1]);
+                        const end = toSeconds(match[2]);
+                        const text = lines.slice(lines.indexOf(timeLine) + 1).join(' ');
+                        out.push({ start, end, text });
+                    }
+                }
+            }
+            return out;
+
+            function toSeconds(t) {
+                const [h, m, s, ms] = t.split(/[:,]/).map(Number);
+                return h * 3600 + m * 60 + s + ms / 1000;
+            }
         }
-    }
+
 
     </script>
 </body>
