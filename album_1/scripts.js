@@ -1,29 +1,3 @@
-
-let cues = [];
-
-// Загружаем файл song.srt из той же папки
-fetch('song.srt')
-  .then(r => r.text())
-  .then(text => console.log('SRT загружен, первые 100 символов:', text.slice(0,100)))
-  .then(text => {
-    cues = parseSRT(text);
-    rebuildLyrics();
-  })
-  .catch(err => console.error('Ошибка загрузки SRT:', err));
-
-// пересобрать список строк
-function rebuildLyrics() {
-  linesList.innerHTML = '';
-  cues.forEach((c, i) => {
-    const li = document.createElement('li');
-    li.textContent = c.text;
-    li.dataset.index = i;
-    linesList.appendChild(li);
-  });
-  setActive(null);
-}
-
-
 // --- DOM ---
 const audio = document.getElementById('audio');
 const playBtn = document.getElementById('playBtn');
@@ -35,16 +9,31 @@ const timeline = document.getElementById('timeline');
 const linesList = document.getElementById('lines');
 const app = document.getElementById('app');
 
-// Build list
-cues.forEach((c, i) => {
-  const li = document.createElement('li');
-  li.textContent = c.text;
-  li.dataset.index = i;
-  linesList.appendChild(li);
-});
+let cues = []; // сюда загрузим SRT
 
 let activeIndex = 0;
 let isPlaying = false;
+
+// --- Загрузка SRT ---
+fetch('song.srt')
+  .then(r => r.text())
+  .then(text => {
+    cues = parseSRT(text);
+    rebuildLyrics();
+  })
+  .catch(err => console.error('Ошибка загрузки SRT:', err));
+
+// --- Функция пересборки списка ---
+function rebuildLyrics() {
+  linesList.innerHTML = '';
+  cues.forEach((c, i) => {
+    const li = document.createElement('li');
+    li.textContent = c.text;
+    li.dataset.index = i;
+    linesList.appendChild(li);
+  });
+  setActive(0);
+}
 
 function formatTime(t) {
   if (!isFinite(t)) return '0:00';
