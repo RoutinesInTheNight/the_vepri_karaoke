@@ -203,30 +203,37 @@
             }
         } */
 
-        .lines li[data-type="pause"] {
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 8px 0;
-        }
-
-        .pause-bar {
-            width: 80%;
-            height: 4px;
+        #lines li.gap {
+            height: 20px;
+            /* можно регулировать */
             background: #555;
-            /* серый фон полоски */
-            border-radius: 2px;
+            /* серый фон */
+            position: relative;
             overflow: hidden;
+            margin: 8px 0;
+            border-radius: 4px;
         }
 
-        .pause-fill {
-            width: 0%;
+        #lines li.gap::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
             height: 100%;
+            width: 0%;
             background: white;
-            /* цвет прогресса */
-            transition: width 0.1s linear;
-            /* плавная анимация */
+            transition: width linear;
+            /* анимация заполнения */
+        }
+
+        #lines li.gap .fill {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: white;
         }
     </style>
 </head>

@@ -26,33 +26,27 @@ fetch('song.srt')
 function rebuildLyrics() {
   linesList.innerHTML = '';
 
-  // Проходим по cues и вставляем паузы
   for (let i = 0; i < cues.length; i++) {
     const c = cues[i];
 
-    // Создаём обычную строку
+    // создаём обычную строчку
     const li = document.createElement('li');
     li.textContent = c.text;
     li.dataset.index = i;
-    li.dataset.type = 'line';
+    li.dataset.start = c.start;
+    li.dataset.end = c.end;
     linesList.appendChild(li);
 
-    // Если есть следующий cue и между ними есть пауза
+    // если есть пауза до следующей строки, вставляем "gap"
     if (i < cues.length - 1) {
-      const nextC = cues[i + 1];
-      const pauseDuration = nextC.start - c.end;
-      if (pauseDuration > 0.05) { // если пауза > 50ms
-        const pauseLi = document.createElement('li');
-        pauseLi.dataset.type = 'pause';
-        pauseLi.dataset.start = c.end;
-        pauseLi.dataset.end = nextC.start;
-
-        // создаём полоску
-        pauseLi.innerHTML = `<div class="pause-bar">
-          <div class="pause-fill"></div>
-        </div>`;
-
-        linesList.appendChild(pauseLi);
+      const next = cues[i + 1];
+      const gapDuration = next.start - c.end;
+      if (gapDuration > 0.01) { // минимальный порог
+        const gapLi = document.createElement('li');
+        gapLi.classList.add('gap');
+        gapLi.dataset.start = c.end;
+        gapLi.dataset.end = next.start;
+        linesList.appendChild(gapLi);
       }
     }
   }
@@ -94,7 +88,11 @@ audio.addEventListener('pause', () => {
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
 
-  // обычная логика подсветки строчек
+  currentEl.textContent = formatTime(t);
+  const pct = (t / audio.duration) * 100;
+  progress.style.width = `${Math.max(0, Math.min(100, pct))}%`;
+
+  // --- Обновляем активную строку ---
   let idx = cues.findIndex(c => t >= c.start && t < c.end);
   if (idx === -1) {
     if (t >= cues[cues.length - 1].end) idx = cues.length - 1;
@@ -102,25 +100,33 @@ audio.addEventListener('timeupdate', () => {
   }
   if (idx !== activeIndex) setActive(idx);
 
-  // обновление пауз
-  document.querySelectorAll('#lines li[data-type="pause"]').forEach(pauseLi => {
-    const start = parseFloat(pauseLi.dataset.start);
-    const end = parseFloat(pauseLi.dataset.end);
-    const fill = pauseLi.querySelector('.pause-fill');
-    if (t >= start && t <= end) {
-      const pct = ((t - start) / (end - start)) * 100;
-      fill.style.width = pct + '%';
+  // --- Обновляем gaps ---
+  document.querySelectorAll('#lines li.gap').forEach(gap => {
+    const start = parseFloat(gap.dataset.start);
+    const end = parseFloat(gap.dataset.end);
 
-      // центрируем полоску
-      const liHeight = pauseLi.offsetHeight;
-      const wrapRect = linesList.parentElement.getBoundingClientRect();
-      const centerY = wrapRect.height / 2;
-      const offset = centerY - (pauseLi.offsetTop + liHeight / 2);
-      linesList.style.transform = `translateY(${offset}px)`;
-    } else if (t < start) {
-      fill.style.width = '0%';
-    } else if (t > end) {
-      fill.style.width = '100%';
+    if (t >= start && t <= end) {
+      // вычисляем процент заполнения
+      const pct = ((t - start) / (end - start)) * 100;
+      gap.querySelector('::after'); // псевдоэлемент нельзя напрямую
+      // вместо этого используем inline style через span
+      if (!gap.querySelector('.fill')) {
+        const span = document.createElement('span');
+        span.className = 'fill';
+        span.style.position = 'absolute';
+        span.style.top = '0';
+        span.style.left = '0';
+        span.style.height = '100%';
+        span.style.width = '0%';
+        span.style.background = 'white';
+        span.style.transition = 'width 0.1s linear';
+        gap.appendChild(span);
+      }
+      gap.querySelector('.fill').style.width = `${pct}%`;
+    } else {
+      // сброс, если не в тайминге
+      const span = gap.querySelector('.fill');
+      if (span) span.style.width = '0%';
     }
   });
 });
