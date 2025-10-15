@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lyrics Sync Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: #777;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        audio {
+            margin-top: 20px;
+        }
+
+        .lyrics-container {
+            position: relative;
+            overflow: hidden;
+            height: 200px;
+            width: 80%;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .lyrics {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            transform: translateY(-50%);
+            transition: transform 0.5s ease;
+        }
+
+        .line {
+            line-height: 2em;
+            transition: color 0.3s;
+        }
+
+        .active {
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🎵 Simple Lyrics Player</h1>
+    <audio id="audio" controls>
+        <source src="wwwww.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает аудио.
+    </audio>
+
+    <div class="lyrics-container">
+        <div class="lyrics" id="lyrics"></div>
+    </div>
+
+    <script>
+        // Пример данных как в SRT
+        const srtData = `
+1
+00:00:05,000 --> 00:00:08,000
+Это первая строка
+
+2
+00:00:08,000 --> 00:00:12,000
+Это вторая строка
+
+3
+00:00:12,000 --> 00:00:16,000
+А это третья строка
+`;
+
+        function parseSRT(data) {
+            return data.trim().split(/\n\n+/).map(block => {
+                const [id, time, ...textLines] = block.split("\n");
+                const [start, end] = time.split(" --> ").map(t => toSeconds(t));
+                return { start, end, text: textLines.join("\n") };
+            });
+        }
+
+        function toSeconds(time) {
+            const [h, m, s] = time.replace(',', '.').split(':');
+            return parseFloat(h) * 3600 + parseFloat(m) * 60 + parseFloat(s);
+        }
+
+        const lyricsData = parseSRT(srtData);
+        const lyricsEl = document.getElementById('lyrics');
+        const audio = document.getElementById('audio');
+
+        // Добавляем строки на страницу
+        lyricsEl.innerHTML = lyricsData
+            .map(line => `<div class="line">${line.text}</div>`)
+            .join('');
+
+        const lines = Array.from(document.querySelectorAll('.line'));
+
+        audio.addEventListener('timeupdate', () => {
+            const current = audio.currentTime;
+            let activeIndex = lyricsData.findIndex(line => current >= line.start && current < line.end);
+            if (activeIndex === -1) return;
+
+            lines.forEach((line, i) => line.classList.toggle('active', i === activeIndex));
+
+            // Смещаем блок текста так, чтобы активная строка была по центру
+            const offset = (activeIndex * -2) + 0; // 2em = line-height
+            lyricsEl.style.transform = `translateY(calc(-${activeIndex * 2}em + 50%))`;
+        });
+    </script>
+</body>
+
+</html>
