@@ -61,8 +61,8 @@ body {
   width: 90%;
   margin: 0 auto calc(100 / 428 * 16 * var(--vw)) auto;
   border-radius: calc(100 / 428 * 16 * var(--vw));
-  background-color: #2e3e2b;
-  border: 1px solid #749C6C;
+  background-color: #1C1C1C;
+  border: calc(100 / 428 * 2 * var(--vw)) solid #3D3C3F;
   padding-right: calc(100 / 428 * 8 * var(--vw));
 }
 
@@ -75,7 +75,7 @@ body {
 }
 
 .album span {
-  color: #749C6C;
+  color: #97979D;
   font-size: calc(100 / 428 * 16 * var(--vw));
   font-family: 'Sf Pro Display Bold', Arial, sans-serif;
   flex: 1;

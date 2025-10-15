@@ -5,7 +5,6 @@ telegram.expand();
 if (telegram.isVersionAtLeast("7.7")) telegram.disableVerticalSwipes();
 if (telegram.isVersionAtLeast("8.0")) {
   telegram.requestFullscreen();
-  telegram.lockOrientation();
 }
 
 
