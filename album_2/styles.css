@@ -1,0 +1,92 @@
+@font-face {
+  font-family: 'Sf Pro Display Regular';
+  src: url('../fonts/SFPRODISPLAYREGULAR.OTF') format('truetype')
+}
+
+@font-face {
+  font-family: 'Sf Pro Display Medium';
+  src: url('../fonts/SFPRODISPLAYMEDIUM.OTF') format('truetype')
+}
+
+@font-face {
+  font-family: 'Sf Pro Display Bold';
+  src: url('../fonts/SFPRODISPLAYBOLD.OTF') format('truetype')
+}
+
+:root {
+  --body-width: 100vw;
+  --vw: calc(var(--body-width) / 100);
+}
+
+@media (min-width: 500px) {
+  :root {
+    --body-width: calc(100vh * 0.5);
+  }
+
+  body {
+    width: var(--body-width);
+  }
+}
+
+* {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  text-decoration: none;
+}
+
+
+
+body {
+  background-color: black;
+  color: #d5e1d3;
+  font-family: 'Sf Pro Display Regular', Arial, sans-serif;
+  overflow-x: hidden;
+  margin: 0 auto;
+  padding: 0;
+}
+
+
+
+
+
+
+
+
+.album {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  margin: 0 auto calc(100 / 428 * 16 * var(--vw)) auto;
+  border-radius: calc(100 / 428 * 16 * var(--vw));
+  background-color: #1C1C1C;
+  border: calc(100 / 428 * 2 * var(--vw)) solid #3D3C3F;
+  padding-right: calc(100 / 428 * 8 * var(--vw));
+}
+
+.album img {
+  width: calc(100 / 428 * 80 * var(--vw));
+  height: calc(100 / 428 * 80 * var(--vw));
+  border-radius: calc(100 / 428 * 12 * var(--vw));
+  object-fit: cover;
+  margin: calc(100 / 428 * 8 * var(--vw));
+}
+
+.album span {
+  color: #97979D;
+  font-size: calc(100 / 428 * 16 * var(--vw));
+  font-family: 'Sf Pro Display Bold', Arial, sans-serif;
+  flex: 1;
+}
+
+.album svg {
+  width: calc(100 / 428 * 16 * var(--vw));
+  flex-shrink: 0;
+}
+
+
+
+
+
