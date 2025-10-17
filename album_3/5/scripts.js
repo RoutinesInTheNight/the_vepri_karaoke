@@ -207,32 +207,17 @@ function setActive(idx) {
     if (activeLi.classList.contains('dash-line')) {
       const cue = cues[idx];
       const duration = cue.end - cue.start;
-      const afterEl = activeLi; // ::after через transition
-      afterEl.style.setProperty('--duration', `${duration}s`);
-      const pseudo = activeLi;
-      pseudo.style.setProperty('--duration', `${duration}s`);
-      const el = activeLi;
-      const after = el;
-      after.style.setProperty('--duration', `${duration}s`);
-      activeLi.querySelector?.('::after');
-      activeLi.style.setProperty('transition', `none`);
+
+      // сбрасываем прогресс
+      activeLi.style.backgroundSize = '0% 100%';
+      // небольшая задержка, чтобы transition сработал
       requestAnimationFrame(() => {
-        const after = activeLi;
-        after.style.transition = `width ${duration}s linear`;
-        after.style.setProperty('--duration', `${duration}s`);
-        after.style.setProperty('width', '100%');
+        activeLi.style.transition = `background-size ${duration}s linear`;
+        activeLi.style.backgroundSize = '100% 100%';
       });
-      const afterNode = activeLi;
-      const pseudoStyle = activeLi;
-      pseudoStyle.style.transition = `width ${duration}s linear`;
-      setTimeout(() => activeLi.style.setProperty('--width', '100%'), 0);
-      activeLi.querySelector?.('::after');
-      const pseudoEl = activeLi;
-      pseudoEl.style.setProperty('--transition', `${duration}s linear`);
-      pseudoEl.style.setProperty('--width', '100%');
-      const dashAfter = activeLi;
-      dashAfter.style.transition = `width ${duration}s linear`;
-      dashAfter.style.width = '100%';
+    } else {
+      activeLi.style.transition = '';
+      activeLi.style.backgroundSize = '';
     }
   }
 

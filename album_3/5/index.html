@@ -206,10 +206,16 @@
         } */
 
         /* анимация подсветки тире-строк */
+        /* Тире-строки — будут анимироваться через градиент */
         .lines-list li.dash-line {
-            position: relative;
-            color: red;
+            background: linear-gradient(to right, var(--accent) 0%, var(--accent) 0%, var(--muted) 0%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: background-size linear;
+            background-size: 0% 100%;
+            background-repeat: no-repeat;
         }
+
 
         .lines-list li.dash-line::after {
             content: attr(data-text);
