@@ -204,6 +204,25 @@
                 font-size: 12px
             }
         } */
+
+        /* анимация подсветки тире-строк */
+        .lines-list li.dash-line {
+            position: relative;
+            color: red;
+        }
+
+        .lines-list li.dash-line::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0%;
+            height: 100%;
+            color: white;
+            overflow: hidden;
+            white-space: nowrap;
+            transition: width linear;
+        }
     </style>
 </head>
 

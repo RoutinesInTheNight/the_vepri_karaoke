@@ -86,20 +86,24 @@ function rebuildLyrics() {
 
   for (let i = 0; i < cues.length; i++) {
     const c = cues[i];
-
-    // создаём обычную строчку
     const li = document.createElement('li');
     li.textContent = c.text;
     li.dataset.index = i;
     li.dataset.start = c.start;
     li.dataset.end = c.end;
+
+    // если строка состоит только из тире
+    if (/^-+$/.test(c.text.trim())) {
+      li.classList.add('dash-line');
+      li.dataset.text = c.text;
+    }
+
     linesList.appendChild(li);
 
-    // если есть пауза до следующей строки, вставляем "gap"
     if (i < cues.length - 1) {
       const next = cues[i + 1];
       const gapDuration = next.start - c.end;
-      if (gapDuration > 0.01) { // минимальный порог
+      if (gapDuration > 0.01) {
         const gapLi = document.createElement('li');
         gapLi.classList.add('gap');
         gapLi.dataset.start = c.end;
@@ -111,6 +115,7 @@ function rebuildLyrics() {
 
   setActive(0);
 }
+
 
 
 // --- Вспомогательные функции ---
@@ -180,11 +185,57 @@ function setActive(idx) {
   idx = Math.min(cues.length - 1, idx);
   activeIndex = idx;
 
-  document.querySelectorAll('#lines li').forEach(li => li.classList.remove('active'));
-  const activeLi = document.querySelector(`#lines li[data-index='${idx}']`);
-  if (activeLi) activeLi.classList.add('active');
+  document.querySelectorAll('#lines li').forEach(li => {
+    li.classList.remove('active');
+    if (li.classList.contains('dash-line')) {
+      li.style.setProperty('--fill', '0%');
+      li.querySelector?.('::after');
+      li.style.removeProperty('--duration');
+      li.style.removeProperty('transition');
+      li.style.removeProperty('width');
+      li.style.setProperty('--width', '0%');
+      li.style.setProperty('--duration', '0s');
+      li.style.setProperty('--transition', 'none');
+    }
+  });
 
-  // смещаем список, чтобы активная строчка была по центру
+  const activeLi = document.querySelector(`#lines li[data-index='${idx}']`);
+  if (activeLi) {
+    activeLi.classList.add('active');
+
+    // если тире-строка — запустить анимацию заливки
+    if (activeLi.classList.contains('dash-line')) {
+      const cue = cues[idx];
+      const duration = cue.end - cue.start;
+      const afterEl = activeLi; // ::after через transition
+      afterEl.style.setProperty('--duration', `${duration}s`);
+      const pseudo = activeLi;
+      pseudo.style.setProperty('--duration', `${duration}s`);
+      const el = activeLi;
+      const after = el;
+      after.style.setProperty('--duration', `${duration}s`);
+      activeLi.querySelector?.('::after');
+      activeLi.style.setProperty('transition', `none`);
+      requestAnimationFrame(() => {
+        const after = activeLi;
+        after.style.transition = `width ${duration}s linear`;
+        after.style.setProperty('--duration', `${duration}s`);
+        after.style.setProperty('width', '100%');
+      });
+      const afterNode = activeLi;
+      const pseudoStyle = activeLi;
+      pseudoStyle.style.transition = `width ${duration}s linear`;
+      setTimeout(() => activeLi.style.setProperty('--width', '100%'), 0);
+      activeLi.querySelector?.('::after');
+      const pseudoEl = activeLi;
+      pseudoEl.style.setProperty('--transition', `${duration}s linear`);
+      pseudoEl.style.setProperty('--width', '100%');
+      const dashAfter = activeLi;
+      dashAfter.style.transition = `width ${duration}s linear`;
+      dashAfter.style.width = '100%';
+    }
+  }
+
   const liHeight = activeLi ? activeLi.offsetHeight : 48;
   const wrapRect = linesList.parentElement.getBoundingClientRect();
   const centerY = wrapRect.height / 2;
@@ -192,6 +243,7 @@ function setActive(idx) {
   const offset = centerY - (activeTop + liHeight / 2);
   linesList.style.transform = `translateY(${offset}px)`;
 }
+
 
 // клик по строчке для перехода
 linesList.addEventListener('click', e => {
