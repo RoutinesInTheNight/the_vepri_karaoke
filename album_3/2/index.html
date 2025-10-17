@@ -204,27 +204,6 @@
                 font-size: 12px
             }
         } */
-
-        .lines-list li.gap {
-            position: relative;
-            height: 24px;
-            /* высота полоски */
-            background: rgba(139, 139, 139, 0.25);
-            /* серый фон */
-            overflow: hidden;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-
-        .lines-list li.gap .fill {
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #fff, #fff);
-            transition: width linear;
-        }
     </style>
 </head>
 
@@ -234,6 +213,17 @@
         <div class="lyrics-wrap">
             <div class="lines">
                 <ul class="lines-list" id="lines"></ul>
+            </div>
+            <div id="space-line" style="
+                position: absolute;
+                left: 10%;
+                right: 10%;
+                top: 50%;
+                height: 2px;
+                background-color: gray;
+                opacity: 0;
+                transform-origin: left;
+            ">
             </div>
         </div>
 

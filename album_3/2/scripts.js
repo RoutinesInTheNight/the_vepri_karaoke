@@ -143,20 +143,49 @@ audio.addEventListener('pause', () => {
   if (audio.currentTime === 0) app.classList.add('not-playing');
 });
 
+
+
+const spaceLine = document.getElementById('space-line');
+
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-  currentEl.textContent = formatTime(t);
-  const pct = (t / audio.duration) * 100;
-  progress.style.width = `${Math.max(0, Math.min(100, pct))}%`;
 
-  // найти активную строчку
+  // ищем активную строку
   let idx = cues.findIndex(c => t >= c.start && t < c.end);
   if (idx === -1) {
     if (t >= cues[cues.length - 1].end) idx = cues.length - 1;
     else if (t < cues[0].start) idx = 0;
   }
+
   if (idx !== activeIndex) setActive(idx);
+
+  // Проверка на строку с пробелом
+  const cue = cues[idx];
+  if (cue && cue.text.trim() === '') {
+    // Время отображения полосы
+    const duration = cue.end - cue.start;
+
+    // Отображаем полоску с анимацией
+    spaceLine.style.transition = 'opacity 0.5s ease';
+    spaceLine.style.opacity = '1';
+
+    // Анимация прогресса слева направо
+    spaceLine.style.background = 'linear-gradient(to right, white 0%, gray 100%)';
+    spaceLine.style.transform = 'scaleX(0)';
+
+    // маленький тайм-аут чтобы стартовать анимацию
+    requestAnimationFrame(() => {
+      spaceLine.style.transition = `transform ${duration}s linear, opacity 0.5s ease`;
+      spaceLine.style.transform = 'scaleX(1)';
+    });
+
+  } else {
+    // Скрываем полоску
+    spaceLine.style.transition = 'opacity 0.5s ease';
+    spaceLine.style.opacity = '0';
+  }
 });
+
 
 // клик по таймлайну
 timeline.addEventListener('click', e => {
@@ -181,49 +210,17 @@ function setActive(idx) {
   activeIndex = idx;
 
   document.querySelectorAll('#lines li').forEach(li => li.classList.remove('active'));
-
   const activeLi = document.querySelector(`#lines li[data-index='${idx}']`);
   if (activeLi) activeLi.classList.add('active');
 
-  // смещаем список по центру
+  // смещаем список, чтобы активная строчка была по центру
   const liHeight = activeLi ? activeLi.offsetHeight : 48;
   const wrapRect = linesList.parentElement.getBoundingClientRect();
   const centerY = wrapRect.height / 2;
   const activeTop = activeLi ? activeLi.offsetTop : 0;
   const offset = centerY - (activeTop + liHeight / 2);
   linesList.style.transform = `translateY(${offset}px)`;
-
-  // --- Анимация gap-полоски ---
-  if (activeLi && activeLi.classList.contains('gap')) {
-    activeLi.style.opacity = 1; // плавное появление
-    let fill = activeLi.querySelector('.fill');
-    if (!fill) {
-      fill = document.createElement('div');
-      fill.classList.add('fill');
-      activeLi.appendChild(fill);
-    }
-
-    // вычисляем длительность полоски
-    const duration = (Number(activeLi.dataset.end) - Number(activeLi.dataset.start)) * 1000;
-
-    // сброс
-    fill.style.transition = 'none';
-    fill.style.width = '0%';
-
-    // небольшая пауза перед анимацией для корректного старта
-    requestAnimationFrame(() => {
-      fill.style.transition = `width ${duration}ms linear`;
-      fill.style.width = '100%';
-    });
-
-    // плавное исчезновение после окончания
-    setTimeout(() => {
-      activeLi.style.transition = 'opacity 0.5s';
-      activeLi.style.opacity = 0;
-    }, duration);
-  }
 }
-
 
 // клик по строчке для перехода
 linesList.addEventListener('click', e => {
