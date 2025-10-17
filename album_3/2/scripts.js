@@ -87,26 +87,19 @@ function rebuildLyrics() {
   for (let i = 0; i < cues.length; i++) {
     const c = cues[i];
 
+    // создаём обычную строчку
     const li = document.createElement('li');
+    li.textContent = c.text;
     li.dataset.index = i;
     li.dataset.start = c.start;
     li.dataset.end = c.end;
-
-    // если строка состоит только из "-"
-    if (c.text.trim() === '-') {
-      li.classList.add('fill-line');
-      li.innerHTML = `<span class="fill"></span>`;
-    } else {
-      li.textContent = c.text;
-    }
-
     linesList.appendChild(li);
 
-    // вставляем "gap", если есть пауза до следующей строки
+    // если есть пауза до следующей строки, вставляем "gap"
     if (i < cues.length - 1) {
       const next = cues[i + 1];
       const gapDuration = next.start - c.end;
-      if (gapDuration > 0.01) {
+      if (gapDuration > 0.01) { // минимальный порог
         const gapLi = document.createElement('li');
         gapLi.classList.add('gap');
         gapLi.dataset.start = c.end;
@@ -118,7 +111,6 @@ function rebuildLyrics() {
 
   setActive(0);
 }
-
 
 
 // --- Вспомогательные функции ---
@@ -157,35 +149,14 @@ audio.addEventListener('timeupdate', () => {
   const pct = (t / audio.duration) * 100;
   progress.style.width = `${Math.max(0, Math.min(100, pct))}%`;
 
-  // 🔹 обновляем заполнение для строк с "-"
-  document.querySelectorAll('.fill-line').forEach(li => {
-    const i = Number(li.dataset.index);
-    const cue = cues[i];
-    if (!cue) return;
-
-    const fill = li.querySelector('.fill');
-    if (!fill) return;
-
-    if (t < cue.start) {
-      fill.style.width = '0%';
-    } else if (t >= cue.end) {
-      fill.style.width = '100%';
-    } else {
-      const pct = ((t - cue.start) / (cue.end - cue.start)) * 100;
-      fill.style.width = `${pct}%`;
-    }
-  });
-
   // найти активную строчку
   let idx = cues.findIndex(c => t >= c.start && t < c.end);
   if (idx === -1) {
     if (t >= cues[cues.length - 1].end) idx = cues.length - 1;
     else if (t < cues[0].start) idx = 0;
   }
-
   if (idx !== activeIndex) setActive(idx);
 });
-
 
 // клик по таймлайну
 timeline.addEventListener('click', e => {
@@ -210,17 +181,49 @@ function setActive(idx) {
   activeIndex = idx;
 
   document.querySelectorAll('#lines li').forEach(li => li.classList.remove('active'));
+
   const activeLi = document.querySelector(`#lines li[data-index='${idx}']`);
   if (activeLi) activeLi.classList.add('active');
 
-  // смещаем список, чтобы активная строчка была по центру
+  // смещаем список по центру
   const liHeight = activeLi ? activeLi.offsetHeight : 48;
   const wrapRect = linesList.parentElement.getBoundingClientRect();
   const centerY = wrapRect.height / 2;
   const activeTop = activeLi ? activeLi.offsetTop : 0;
   const offset = centerY - (activeTop + liHeight / 2);
   linesList.style.transform = `translateY(${offset}px)`;
+
+  // --- Анимация gap-полоски ---
+  if (activeLi && activeLi.classList.contains('gap')) {
+    activeLi.style.opacity = 1; // плавное появление
+    let fill = activeLi.querySelector('.fill');
+    if (!fill) {
+      fill = document.createElement('div');
+      fill.classList.add('fill');
+      activeLi.appendChild(fill);
+    }
+
+    // вычисляем длительность полоски
+    const duration = (Number(activeLi.dataset.end) - Number(activeLi.dataset.start)) * 1000;
+
+    // сброс
+    fill.style.transition = 'none';
+    fill.style.width = '0%';
+
+    // небольшая пауза перед анимацией для корректного старта
+    requestAnimationFrame(() => {
+      fill.style.transition = `width ${duration}ms linear`;
+      fill.style.width = '100%';
+    });
+
+    // плавное исчезновение после окончания
+    setTimeout(() => {
+      activeLi.style.transition = 'opacity 0.5s';
+      activeLi.style.opacity = 0;
+    }, duration);
+  }
 }
+
 
 // клик по строчке для перехода
 linesList.addEventListener('click', e => {

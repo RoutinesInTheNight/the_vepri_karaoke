@@ -205,23 +205,25 @@
             }
         } */
 
-        .fill-line {
+        .lines-list li.gap {
             position: relative;
-            color: #555;
-            /* можно сделать серой */
-            height: 1.4em;
+            height: 24px;
+            /* высота полоски */
+            background: rgba(139, 139, 139, 0.25);
+            /* серый фон */
             overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.5s;
         }
 
-        .fill-line .fill {
+        .lines-list li.gap .fill {
             position: absolute;
-            top: 0;
             left: 0;
-            bottom: 0;
+            top: 0;
+            height: 100%;
             width: 0%;
-            background: white;
-            transition: width 0.1s linear;
-            border-radius: 2px;
+            background: linear-gradient(90deg, #fff, #fff);
+            transition: width linear;
         }
     </style>
 </head>
