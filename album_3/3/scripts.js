@@ -86,20 +86,25 @@ function rebuildLyrics() {
 
   for (let i = 0; i < cues.length; i++) {
     const c = cues[i];
-
-    // создаём обычную строчку
     const li = document.createElement('li');
     li.textContent = c.text;
     li.dataset.index = i;
     li.dataset.start = c.start;
     li.dataset.end = c.end;
+
+    // --- если строка состоит только из тире ---
+    if (/^-+$/.test(c.text.trim())) {
+      li.classList.add('dash-line');
+      li.dataset.text = c.text;
+    }
+
     linesList.appendChild(li);
 
-    // если есть пауза до следующей строки, вставляем "gap"
+    // добавление gap между строками (без изменений)
     if (i < cues.length - 1) {
       const next = cues[i + 1];
       const gapDuration = next.start - c.end;
-      if (gapDuration > 0.01) { // минимальный порог
+      if (gapDuration > 0.01) {
         const gapLi = document.createElement('li');
         gapLi.classList.add('gap');
         gapLi.dataset.start = c.end;
@@ -111,6 +116,7 @@ function rebuildLyrics() {
 
   setActive(0);
 }
+
 
 
 // --- Вспомогательные функции ---
@@ -156,6 +162,17 @@ audio.addEventListener('timeupdate', () => {
     else if (t < cues[0].start) idx = 0;
   }
   if (idx !== activeIndex) setActive(idx);
+
+  // --- анимация для тире-линий ---
+  document.querySelectorAll('.dash-line').forEach(li => {
+    const start = parseFloat(li.dataset.start);
+    const end = parseFloat(li.dataset.end);
+    const dur = end - start;
+    const t = audio.currentTime;
+    const pct = Math.max(0, Math.min(1, (t - start) / dur)) * 100;
+    li.style.setProperty('--fill-width', pct + '%');
+  });
+
 });
 
 // клик по таймлайну

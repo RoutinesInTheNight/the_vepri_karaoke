@@ -204,6 +204,43 @@
                 font-size: 12px
             }
         } */
+
+        .lines-list li.dash-line {
+            position: relative;
+            color: var(--muted);
+            overflow: hidden;
+        }
+
+        .lines-list li.dash-line::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0%;
+            height: 100%;
+            color: var(--accent);
+            white-space: nowrap;
+            overflow: hidden;
+            transition: none;
+        }
+
+        .lines-list li.dash-line {
+            position: relative;
+            color: var(--muted);
+            overflow: hidden;
+        }
+
+        .lines-list li.dash-line::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: var(--fill-width, 0%);
+            height: 100%;
+            color: var(--accent);
+            white-space: nowrap;
+            overflow: hidden;
+        }
     </style>
 </head>
 
