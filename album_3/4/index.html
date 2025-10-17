@@ -208,7 +208,8 @@
         /* добавить после .lines-list li.active */
         .lines-list li.dash-line {
             position: relative;
-            color: transparent;
+            color: #555;
+            /* серый цвет базовой линии */
             overflow: hidden;
         }
 
@@ -217,12 +218,12 @@
             position: absolute;
             left: 0;
             top: 0;
-            width: 0%;
             height: 100%;
+            width: var(--progress, 0%);
             color: white;
             white-space: nowrap;
             overflow: hidden;
-            transition: width linear;
+            transition: width 0.1s linear;
         }
     </style>
 </head>
