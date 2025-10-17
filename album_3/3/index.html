@@ -205,41 +205,32 @@
             }
         } */
 
+        /* тире-линии: базовая серая + белая поверх, которая раскрывается слева->справа */
         .lines-list li.dash-line {
             position: relative;
             color: var(--muted);
-            overflow: hidden;
+            /* серая базовая */
+            overflow: visible;
+            text-align: center;
+            /* по центру */
+            white-space: nowrap;
         }
 
+        /* белая "копия" текста поверх, которая будет обрезаться clip-path-ом */
         .lines-list li.dash-line::after {
             content: attr(data-text);
             position: absolute;
             left: 0;
+            right: 0;
             top: 0;
-            width: 0%;
-            height: 100%;
+            bottom: 0;
+            text-align: center;
             color: var(--accent);
-            white-space: nowrap;
-            overflow: hidden;
-            transition: none;
-        }
-
-        .lines-list li.dash-line {
-            position: relative;
-            color: var(--muted);
-            overflow: hidden;
-        }
-
-        .lines-list li.dash-line::after {
-            content: attr(data-text);
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: var(--fill-width, 0%);
-            height: 100%;
-            color: var(--accent);
-            white-space: nowrap;
-            overflow: hidden;
+            /* белая */
+            pointer-events: none;
+            /* закрыто полностью (правый inset = 100%) -> будем уменьшать правый inset */
+            -webkit-clip-path: inset(0 100% 0 0);
+            clip-path: inset(0 100% 0 0);
         }
     </style>
 </head>

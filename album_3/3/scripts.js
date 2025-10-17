@@ -163,14 +163,21 @@ audio.addEventListener('timeupdate', () => {
   }
   if (idx !== activeIndex) setActive(idx);
 
-  // --- анимация для тире-линий ---
+  // анимация заполнения для dash-line
   document.querySelectorAll('.dash-line').forEach(li => {
     const start = parseFloat(li.dataset.start);
     const end = parseFloat(li.dataset.end);
-    const dur = end - start;
+    const dur = end - start || 0.001;
     const t = audio.currentTime;
+    // процент заполнения от 0 до 100
     const pct = Math.max(0, Math.min(1, (t - start) / dur)) * 100;
-    li.style.setProperty('--fill-width', pct + '%');
+    // правый inset = 100% - pct
+    const rightInset = (100 - pct) + '%';
+    li.style.setProperty('--dash-right-inset', rightInset);
+    // применяем clip-path через inline style (для лучшей поддержки)
+    const clip = `inset(0 ${rightInset} 0 0)`;
+    li.style.webkitClipPath = clip;
+    li.style.clipPath = clip;
   });
 
 });
