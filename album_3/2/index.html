@@ -204,6 +204,25 @@
                 font-size: 12px
             }
         } */
+
+        .fill-line {
+            position: relative;
+            color: #555;
+            /* можно сделать серой */
+            height: 1.4em;
+            overflow: hidden;
+        }
+
+        .fill-line .fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 0%;
+            background: white;
+            transition: width 0.1s linear;
+            border-radius: 2px;
+        }
     </style>
 </head>
 

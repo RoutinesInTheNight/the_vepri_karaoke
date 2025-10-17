@@ -87,19 +87,26 @@ function rebuildLyrics() {
   for (let i = 0; i < cues.length; i++) {
     const c = cues[i];
 
-    // создаём обычную строчку
     const li = document.createElement('li');
-    li.textContent = c.text;
     li.dataset.index = i;
     li.dataset.start = c.start;
     li.dataset.end = c.end;
+
+    // если строка состоит только из "-"
+    if (c.text.trim() === '-') {
+      li.classList.add('fill-line');
+      li.innerHTML = `<span class="fill"></span>`;
+    } else {
+      li.textContent = c.text;
+    }
+
     linesList.appendChild(li);
 
-    // если есть пауза до следующей строки, вставляем "gap"
+    // вставляем "gap", если есть пауза до следующей строки
     if (i < cues.length - 1) {
       const next = cues[i + 1];
       const gapDuration = next.start - c.end;
-      if (gapDuration > 0.01) { // минимальный порог
+      if (gapDuration > 0.01) {
         const gapLi = document.createElement('li');
         gapLi.classList.add('gap');
         gapLi.dataset.start = c.end;
@@ -111,6 +118,7 @@ function rebuildLyrics() {
 
   setActive(0);
 }
+
 
 
 // --- Вспомогательные функции ---
@@ -149,14 +157,35 @@ audio.addEventListener('timeupdate', () => {
   const pct = (t / audio.duration) * 100;
   progress.style.width = `${Math.max(0, Math.min(100, pct))}%`;
 
+  // 🔹 обновляем заполнение для строк с "-"
+  document.querySelectorAll('.fill-line').forEach(li => {
+    const i = Number(li.dataset.index);
+    const cue = cues[i];
+    if (!cue) return;
+
+    const fill = li.querySelector('.fill');
+    if (!fill) return;
+
+    if (t < cue.start) {
+      fill.style.width = '0%';
+    } else if (t >= cue.end) {
+      fill.style.width = '100%';
+    } else {
+      const pct = ((t - cue.start) / (cue.end - cue.start)) * 100;
+      fill.style.width = `${pct}%`;
+    }
+  });
+
   // найти активную строчку
   let idx = cues.findIndex(c => t >= c.start && t < c.end);
   if (idx === -1) {
     if (t >= cues[cues.length - 1].end) idx = cues.length - 1;
     else if (t < cues[0].start) idx = 0;
   }
+
   if (idx !== activeIndex) setActive(idx);
 });
+
 
 // клик по таймлайну
 timeline.addEventListener('click', e => {
