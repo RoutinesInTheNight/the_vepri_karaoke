@@ -59,11 +59,6 @@ const urlParams = new URLSearchParams(window.location.search);
 const songNumber = urlParams.get('number') || '1'; // дефолт 1, если не указан
 
 
-// Подставляем номер в путь к аудио
-const audio = document.getElementById('audio');
-audio.src = `../music/${songNumber}.mp3`;
-
-
 
 
 
@@ -77,6 +72,8 @@ const progress = document.getElementById('progress');
 const timeline = document.getElementById('timeline');
 const linesList = document.getElementById('lines');
 const app = document.getElementById('app');
+
+audio.src = `../music/${songNumber}.mp3`;
 
 let cues = []; // сюда загрузим SRT
 let activeIndex = 0;
