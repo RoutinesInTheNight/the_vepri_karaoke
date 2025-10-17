@@ -87,19 +87,25 @@ function rebuildLyrics() {
   for (let i = 0; i < cues.length; i++) {
     const c = cues[i];
 
-    // создаём обычную строчку
     const li = document.createElement('li');
     li.textContent = c.text;
     li.dataset.index = i;
     li.dataset.start = c.start;
     li.dataset.end = c.end;
+
+    // если строка состоит только из дефисов — это "dash-line"
+    if (/^-+$/.test(c.text.trim())) {
+      li.classList.add('dash-line');
+      li.dataset.text = c.text.trim();
+    }
+
     linesList.appendChild(li);
 
-    // если есть пауза до следующей строки, вставляем "gap"
+    // если есть пауза до следующей строки, вставляем gap
     if (i < cues.length - 1) {
       const next = cues[i + 1];
       const gapDuration = next.start - c.end;
-      if (gapDuration > 0.01) { // минимальный порог
+      if (gapDuration > 0.01) {
         const gapLi = document.createElement('li');
         gapLi.classList.add('gap');
         gapLi.dataset.start = c.end;
@@ -111,6 +117,7 @@ function rebuildLyrics() {
 
   setActive(0);
 }
+
 
 
 // --- Вспомогательные функции ---
@@ -155,8 +162,23 @@ audio.addEventListener('timeupdate', () => {
     if (t >= cues[cues.length - 1].end) idx = cues.length - 1;
     else if (t < cues[0].start) idx = 0;
   }
+
   if (idx !== activeIndex) setActive(idx);
+
+  // обновление "прорисовки" дефисных строк
+  document.querySelectorAll('.dash-line').forEach(li => {
+    const start = parseFloat(li.dataset.start);
+    const end = parseFloat(li.dataset.end);
+    const duration = end - start;
+
+    // вычисляем прогресс заливки (0–1)
+    const progress = Math.min(1, Math.max(0, (t - start) / duration));
+
+    // применяем к CSS
+    li.style.setProperty('--progress', `${progress * 100}%`);
+  });
 });
+
 
 // клик по таймлайну
 timeline.addEventListener('click', e => {

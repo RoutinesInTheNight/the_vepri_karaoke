@@ -204,6 +204,26 @@
                 font-size: 12px
             }
         } */
+
+        /* добавить после .lines-list li.active */
+        .lines-list li.dash-line {
+            position: relative;
+            color: transparent;
+            overflow: hidden;
+        }
+
+        .lines-list li.dash-line::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0%;
+            height: 100%;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            transition: width linear;
+        }
     </style>
 </head>
 
