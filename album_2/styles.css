@@ -78,7 +78,6 @@ html {
 
 .info {
   text-align: center;
-  font-family: 'Sf Pro Display Bold', Arial, sans-serif;
   margin: calc(100 / 428 * 12 * var(--vw)) 0 calc(100 / 428 * 32 * var(--vw)) 0;
 }
 
@@ -88,11 +87,13 @@ html {
 
 .info .title {
   font-size: calc(100 / 428 * 22 * var(--vw));
+  font-family: 'Sf Pro Display Bold', Arial, sans-serif;
   color: #fff;
 }
 
 .info .year {
   font-size: calc(100 / 428 * 16 * var(--vw));
+  font-family: 'Sf Pro Display Regular', Arial, sans-serif;
   color: #8d8d92;
 }
 
