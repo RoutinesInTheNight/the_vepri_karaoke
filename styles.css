@@ -40,51 +40,65 @@
 
 body {
   background-color: black;
-  color: #d5e1d3;
-  font-family: 'Sf Pro Display Regular', Arial, sans-serif;
   overflow-x: hidden;
-  margin: 0 auto;
-  padding: 0;
+  overscroll-behavior: none;
+  height: 100vh;
+  margin: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+body::-webkit-scrollbar {
+  display: none;
+}
+html {
+  overflow-x: hidden;
+  overflow: hidden;
 }
 
 
 
 
-
-
-
-
-.album {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 90%;
-  margin: 0 auto calc(100 / 428 * 16 * var(--vw)) auto;
-  border-radius: calc(100 / 428 * 16 * var(--vw));
-  background-color: #1C1C1C;
-  border: calc(100 / 428 * 2 * var(--vw)) solid #3D3C3F;
-  padding-right: calc(100 / 428 * 8 * var(--vw));
+.albums,
+.singles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: calc(100 / 428 * 20 * var(--vw));
+  column-gap: calc(100 / 428 * 20 * var(--vw));
+  width: calc(100 / 428 * 388 * var(--vw));
+  margin: calc(100 / 428 * 10 * var(--vw)) calc(100 / 428 * 20 * var(--vw)) calc(100 / 428 * 40 * var(--vw)) calc(100 / 428 * 20 * var(--vw));
 }
 
-.album img {
-  width: calc(100 / 428 * 80 * var(--vw));
-  height: calc(100 / 428 * 80 * var(--vw));
+
+.albums img,
+.singles img {
+  width: calc(100 / 428 * 184 * var(--vw));
+  height: calc(100 / 428 * 184 * var(--vw));
   border-radius: calc(100 / 428 * 12 * var(--vw));
   object-fit: cover;
-  margin: calc(100 / 428 * 8 * var(--vw));
 }
 
-.album span {
-  color: #97979D;
-  font-size: calc(100 / 428 * 16 * var(--vw));
-  font-family: 'Sf Pro Display Bold', Arial, sans-serif;
+.albums span,
+.singles span {
+  display: block;
+  color: #fff;
+  font-size: calc(100 / 428 * 18 * var(--vw));
+  font-family: 'Sf Pro Display Regular', Arial, sans-serif;
   flex: 1;
 }
 
-.album svg {
-  width: calc(100 / 428 * 16 * var(--vw));
-  flex-shrink: 0;
+
+
+
+
+.head {
+  display: block;
+  font-size: calc(100 / 428 * 24 * var(--vw));
+  font-family: 'Sf Pro Display Medium', Arial, sans-serif;
+  color: #fff;
+  margin-left: calc(100 / 428 * 20 * var(--vw));
 }
+
+
 
 
 
