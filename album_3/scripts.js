@@ -12,6 +12,7 @@ if (telegram.isVersionAtLeast("8.0")) {
 }
 
 
+
 function hapticFeedback(type, redirectUrl) {
   if (telegram.isVersionAtLeast("6.1") && (DEVICE_TYPE === 'android' || DEVICE_TYPE === 'ios')) {
     switch (type) {
@@ -52,19 +53,18 @@ function hapticFeedback(type, redirectUrl) {
 }
 
 
+
 const SafeAreaManager = (() => {
   let safeAreaTop = 0;
   let safeAreaBottom = 0;
   let contentSafeAreaTop = 0;
   let contentSafeAreaBottom = 0;
-
   function getTotalSafeAreas() {
     return {
       top: safeAreaTop + contentSafeAreaTop,
       bottom: safeAreaBottom + contentSafeAreaBottom
     };
   }
-
   function updateFromTelegram() {
     const content = telegram.contentSafeAreaInset || {};
     const system = telegram.safeAreaInset || {};
@@ -74,7 +74,6 @@ const SafeAreaManager = (() => {
     safeAreaTop = system.top || 0;
     safeAreaBottom = system.bottom || 0;
   }
-
   function init() {
     const updateAndNotify = () => {
       updateFromTelegram();
@@ -82,12 +81,10 @@ const SafeAreaManager = (() => {
         SafeAreaManager.onChange(getTotalSafeAreas());
       }
     };
-
     telegram.onEvent('safeAreaChanged', updateAndNotify);
     telegram.onEvent('contentSafeAreaChanged', updateAndNotify);
     updateAndNotify();
   }
-
   return {
     init,
     getTotalSafeAreas,
@@ -96,14 +93,17 @@ const SafeAreaManager = (() => {
 })();
 
 
+
 document.addEventListener('DOMContentLoaded', () => {
-  const albums = document.querySelector('.albums');
-
+  const cover = document.querySelector('.cover');
+  const songs = document.querySelector('.songs');
   SafeAreaManager.onChange = ({ top, bottom }) => {
-    const bottomValue = bottom === 0 ? 'calc((100 / 428) * 8 * var(--vw))' : `${bottom}px`;
+    const bottomValue = bottom === 0 ? 'calc((100 / 428) * 32 * var(--vw))' : `${bottom * 2}px`;
     const topValue = top === 0 ? 'calc(100 / 428 * 16 * var(--vw))' : `${top}px`;
-
-    albums.style.marginTop = topValue
+    cover.style.marginTop = topValue
+    songs.style.marginBottom = bottomValue
   };
   SafeAreaManager.init();
 });
+
+
