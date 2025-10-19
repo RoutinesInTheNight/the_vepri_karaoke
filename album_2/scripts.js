@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   SafeAreaManager.onChange = ({ top, bottom }) => {
-    const bottomValue = bottom === 0 ? 'calc((100 / 428) * 32 * var(--vw))' : `${bottom}px`;
+    const bottomValue = bottom === 0 ? 'calc((100 / 428) * 32 * var(--vw))' : `${bottom * 2}px`;
     const topValue = top === 0 ? 'calc(100 / 428 * 16 * var(--vw))' : `${top}px`;
 
     cover.style.marginTop = topValue
