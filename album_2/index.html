@@ -15,30 +15,316 @@
 
 <body>
 
-    <div class="albums">
+    <svg style="display: none;">
+        <symbol id="arrow-svg" fill="#fff" viewBox="0 0 512 512">
+            <path
+                d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z">
+            </path>
+        </symbol>
+    </svg>
 
-        <div class="album" onclick="hapticFeedback('soft', 'song?number=1')">
-            <img src="../img/album-2-cover.jpg">
-            <span>1. Где ты</span>
-            <svg fill="#97979D" viewBox="0 0 512 512">
-                <path
-                    d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z">
-                </path>
-            </svg>
+
+    <div class="cover">
+        <img src="../img/album-2-cover.jpg" />
+    </div>
+
+    <div class="info">
+        <span class="title">Мемы и депрессия</span>
+        <span class="artist">The Вепри</span>
+        <span class="year">2022</span>
+    </div>
+
+    <div class="songs">
+
+        <div class="song" onclick="hapticFeedback('soft', 'song?number=1')">
+            <span class="number">1</span>
+            <div class="title">
+                <span>Где ты</span>
+                <div class="arrow"><svg>
+                        <use href="#arrow-svg"></use>
+                    </svg></div>
+            </div>
         </div>
 
-        <div class="album" onclick="hapticFeedback('soft', 'song?number=2')">
-            <img src="../img/album-2-cover.jpg">
-            <span>2. 24101989</span>
-            <svg fill="#97979D" viewBox="0 0 512 512">
-                <path
-                    d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z">
-                </path>
-            </svg>
+        <div class="song" onclick="hapticFeedback('soft', 'song?number=2')">
+            <span class="number">2</span>
+            <div class="title">
+                <span>24101989 feat. Валентина Лавриненко</span>
+                <div class="arrow"><svg>
+                        <use href="#arrow-svg"></use>
+                    </svg></div>
+            </div>
         </div>
+
+        <div class="song" onclick="hapticFeedback('soft', 'song?number=3')">
+            <span class="number">3</span>
+            <div class="title">
+                <span>Бар "Рагнарёк" feat. ЗАМАЙ</span>
+                <div class="arrow"><svg>
+                        <use href="#arrow-svg"></use>
+                    </svg></div>
+            </div>
+        </div>
+
+        <div class="song" onclick="hapticFeedback('soft', 'song?number=4')">
+            <span class="number">4</span>
+            <div class="title">
+                <span>За моим компом</span>
+                <div class="arrow"><svg>
+                        <use href="#arrow-svg"></use>
+                    </svg></div>
+            </div>
+        </div>
+
+        <div class="song" onclick="hapticFeedback('soft', 'song?number=5')">
+            <span class="number">5</span>
+            <div class="title">
+                <span>Мальчик-постмодернист</span>
+                <div class="arrow"><svg>
+                        <use href="#arrow-svg"></use>
+                    </svg></div>
+            </div>
+        </div>
+
+
+        <div class="song" onclick="hapticFeedback('soft', 'song?number=6')">
+            <span class="number">6</span>
+            <div class="title">
+                <span>Юра</span>
+                <div class="arrow"><svg>
+                        <use href="#arrow-svg"></use>
+                    </svg></div>
+            </div>
+        </div>
+
+
+        <div class="song" onclick="hapticFeedback('soft', 'song?number=7')">
+            <span class="number">7</span>
+            <div class="title">
+                <span>Ты</span>
+                <div class="arrow"><svg>
+                        <use href="#arrow-svg"></use>
+                    </svg></div>
+            </div>
+        </div>
+
+
+        <div class="song" onclick="hapticFeedback('soft', 'song?number=8')">
+            <span class="number">8</span>
+            <div class="title">
+                <span>Омномном</span>
+                <div class="arrow"><svg>
+                        <use href="#arrow-svg"></use>
+                    </svg></div>
+            </div>
+        </div>
+
+
+        <div class="song" onclick="hapticFeedback('soft', 'song?number=9')">
+            <span class="number">9</span>
+            <div class="title">
+                <span>Старый, толстый</span>
+                <div class="arrow"><svg>
+                        <use href="#arrow-svg"></use>
+                    </svg></div>
+            </div>
+        </div>
+
+
+        <div class="song" onclick="hapticFeedback('soft', 'song?number=10')">
+            <span class="number">10</span>
+            <div class="title">
+                <span>Дикодэнс</span>
+                <div class="arrow"><svg>
+                        <use href="#arrow-svg"></use>
+                    </svg></div>
+            </div>
+        </div>
+
+
+        <div class="song" onclick="hapticFeedback('soft', 'song?number=11')">
+            <span class="number">11</span>
+            <div class="title">
+                <span>Паранойя</span>
+                <div class="arrow"><svg>
+                        <use href="#arrow-svg"></use>
+                    </svg></div>
+            </div>
+        </div>
+
+
+        <div class="song" onclick="hapticFeedback('soft', 'song?number=12')">
+            <span class="number">12</span>
+            <div class="title">
+                <span>Хеллоуин Инфанты</span>
+                <div class="arrow"><svg>
+                        <use href="#arrow-svg"></use>
+                    </svg></div>
+            </div>
+        </div>
+
+
+        <div class="song" onclick="hapticFeedback('soft', 'song?number=13')">
+            <span class="number">13</span>
+            <div class="title">
+                <span>Скевоморфизм</span>
+                <div class="arrow"><svg>
+                        <use href="#arrow-svg"></use>
+                    </svg></div>
+            </div>
+        </div>
+
+
+        <div class="song" onclick="hapticFeedback('soft', 'song?number=14')">
+            <span class="number">14</span>
+            <div class="title">
+                <span>Мемы и депрессия</span>
+                <div class="arrow"><svg>
+                        <use href="#arrow-svg"></use>
+                    </svg></div>
+            </div>
+        </div>
+
+
+        <div class="song" onclick="hapticFeedback('soft', 'song?number=15')">
+            <span class="number">15</span>
+            <div class="title">
+                <span>Я</span>
+                <div class="arrow"><svg>
+                        <use href="#arrow-svg"></use>
+                    </svg></div>
+            </div>
+        </div>
+
+
+        <div class="song" onclick="hapticFeedback('soft', 'song?number=16')">
+            <span class="number">16</span>
+            <div class="title">
+                <span>Песня о смерти</span>
+                <div class="arrow"><svg>
+                        <use href="#arrow-svg"></use>
+                    </svg></div>
+            </div>
+        </div>
+
+
+        <div class="song" onclick="hapticFeedback('soft', 'song?number=17')">
+            <span class="number">17</span>
+            <div class="title">
+                <span>Видоизменённый углерод</span>
+                <div class="arrow"><svg>
+                        <use href="#arrow-svg"></use>
+                    </svg></div>
+            </div>
+        </div>
+
+
+
+
+
+
 
 
     </div>
+
+
+    </div>
+
+
+
+
+
+    <!-- <div class="albums">
+
+
+
+
+
+        <div class="album" onclick="hapticFeedback('soft', 'song?number=3')">
+            <img src="../img/album-2-cover.jpg">
+            <span>3. Бар Рагнарек</span>
+            <svg fill="#97979D" viewBox="0 0 512 512">
+                <path
+                    d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z">
+                </path>
+            </svg>
+        </div>
+
+
+
+        <div class="album" onclick="hapticFeedback('soft', 'song?number=4')">
+            <img src="../img/album-2-cover.jpg">
+            <span>4. За моим компом</span>
+            <svg fill="#97979D" viewBox="0 0 512 512">
+                <path
+                    d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z">
+                </path>
+            </svg>
+        </div>
+
+
+        <div class="album" onclick="hapticFeedback('soft', 'song?number=5')">
+            <img src="../img/album-2-cover.jpg">
+            <span>5. Мальчик-постмодернист</span>
+            <svg fill="#97979D" viewBox="0 0 512 512">
+                <path
+                    d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z">
+                </path>
+            </svg>
+        </div>
+
+        <div class="album" onclick="hapticFeedback('soft', 'song?number=6')">
+            <img src="../img/album-2-cover.jpg">
+            <span>6. Юра</span>
+            <svg fill="#97979D" viewBox="0 0 512 512">
+                <path
+                    d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z">
+                </path>
+            </svg>
+        </div>
+
+        <div class="album" onclick="hapticFeedback('soft', 'song?number=7')">
+            <img src="../img/album-2-cover.jpg">
+            <span>7. Ты</span>
+            <svg fill="#97979D" viewBox="0 0 512 512">
+                <path
+                    d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z">
+                </path>
+            </svg>
+        </div>
+
+        <div class="album" onclick="hapticFeedback('soft', 'song?number=8')">
+            <img src="../img/album-2-cover.jpg">
+            <span>8. Омномном</span>
+            <svg fill="#97979D" viewBox="0 0 512 512">
+                <path
+                    d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z">
+                </path>
+            </svg>
+        </div>
+
+        <div class="album" onclick="hapticFeedback('soft', 'song?number=9')">
+            <img src="../img/album-2-cover.jpg">
+            <span>9. Старый, толстый</span>
+            <svg fill="#97979D" viewBox="0 0 512 512">
+                <path
+                    d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z">
+                </path>
+            </svg>
+        </div>
+
+        <div class="album" onclick="hapticFeedback('soft', 'song?number=10')">
+            <img src="../img/album-2-cover.jpg">
+            <span>10. Дикодэнс</span>
+            <svg fill="#97979D" viewBox="0 0 512 512">
+                <path
+                    d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z">
+                </path>
+            </svg>
+        </div>
+
+
+    </div> -->
 
     <script src="scripts.js"></script>
 

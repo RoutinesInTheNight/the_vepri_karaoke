@@ -40,7 +40,6 @@
 
 body {
   background-color: black;
-  color: #d5e1d3;
   font-family: 'Sf Pro Display Regular', Arial, sans-serif;
   overflow-x: hidden;
   margin: 0 auto;
@@ -51,38 +50,106 @@ body {
 
 
 
+.cover {
+  position: relative;
+  text-align: center;
+  pointer-events: none;
+  margin: 0 auto;
+  width: 100%;
+  /* margin: 0 auto; */
+}
 
-
-
-.album {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 90%;
-  margin: 0 auto calc(100 / 428 * 16 * var(--vw)) auto;
+.cover img {
+  width: calc(100 / 428 * 284 * var(--vw));
   border-radius: calc(100 / 428 * 16 * var(--vw));
-  background-color: #1C1C1C;
-  border: calc(100 / 428 * 2 * var(--vw)) solid #3D3C3F;
-  padding-right: calc(100 / 428 * 8 * var(--vw));
 }
 
-.album img {
-  width: calc(100 / 428 * 80 * var(--vw));
-  height: calc(100 / 428 * 80 * var(--vw));
-  border-radius: calc(100 / 428 * 12 * var(--vw));
-  object-fit: cover;
-  margin: calc(100 / 428 * 8 * var(--vw));
+
+
+
+
+.info {
+  text-align: center;
+  font-family: 'Sf Pro Display Medium', Arial, sans-serif;
+  margin: calc(100 / 428 * 16 * var(--vw)) 0 calc(100 / 428 * 24 * var(--vw)) 0;
 }
 
-.album span {
-  color: #97979D;
+.info span {
+  display: block;
+}
+
+.info .title {
+  font-size: calc(100 / 428 * 24 * var(--vw));
+  color: #fff;
+  margin-bottom: calc(100 / 428 * 4 * var(--vw));
+}
+
+.artist {
+  font-size: calc(100 / 428 * 20 * var(--vw));
+  font-family: 'Sf Pro Display Regular', Arial, sans-serif;
+  color: #e5434e;
+  margin-bottom: calc(100 / 428 * 4 * var(--vw));
+}
+
+.year {
   font-size: calc(100 / 428 * 16 * var(--vw));
-  font-family: 'Sf Pro Display Bold', Arial, sans-serif;
-  flex: 1;
+  color: #8d8d92;
 }
 
-.album svg {
+
+
+
+
+
+
+.songs {
+  width: calc(100 / 428 * 408 * var(--vw));
+  margin-left: calc(100 / 428 * 20 * var(--vw));
+  border-top: calc(100 / 428 * 1 * var(--vw)) solid #262528;
+  border-bottom: calc(100 / 428 * 1 * var(--vw)) solid #262528;
+}
+
+.song {
+  display: flex;
+  font-size: calc(100 / 428 * 20 * var(--vw));
+}
+
+.number {
+  text-align: center;
+  width: calc(100 / 428 * 30 * var(--vw));
+  color: #797980;
+  padding-top: calc(100 / 428 * 17 * var(--vw));
+}
+
+.song:first-child .number {
+  padding-top: calc(100 / 428 * 16 * var(--vw));
+}
+
+.song .title {
+  display: flex;
+  color: #fff;
+  padding: calc(100 / 428 * 16 * var(--vw)) 0 calc(100 / 428 * 16 * var(--vw)) 0;
+  border-top: calc(100 / 428 * 1 * var(--vw)) solid #262528;
+}
+
+.song:first-child .title {
+  border-top: none;
+}
+
+.song .title span {
+  width: calc(100 / 428 * 328 * var(--vw));
+}
+
+.arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(100 / 428 * 50 * var(--vw));
+}
+
+.song svg {
   width: calc(100 / 428 * 16 * var(--vw));
+  height: calc(100 / 428 * 16 * var(--vw));
   flex-shrink: 0;
 }
 
