@@ -40,7 +40,6 @@
 
 body {
   background-color: black;
-  font-family: 'Sf Pro Display Regular', Arial, sans-serif;
   overflow-x: hidden;
   margin: 0 auto;
   padding: 0;
@@ -56,7 +55,6 @@ body {
   pointer-events: none;
   margin: 0 auto;
   width: 100%;
-  /* margin: 0 auto; */
 }
 
 .cover img {
@@ -70,7 +68,6 @@ body {
 
 .info {
   text-align: center;
-  font-family: 'Sf Pro Display Medium', Arial, sans-serif;
   margin: calc(100 / 428 * 16 * var(--vw)) 0 calc(100 / 428 * 24 * var(--vw)) 0;
 }
 
@@ -79,20 +76,14 @@ body {
 }
 
 .info .title {
-  font-size: calc(100 / 428 * 24 * var(--vw));
+  font-size: calc(100 / 428 * 22 * var(--vw));
+  font-family: 'Sf Pro Display Bold', Arial, sans-serif;
   color: #fff;
-  margin-bottom: calc(100 / 428 * 4 * var(--vw));
 }
 
-.artist {
+.info .year {
   font-size: calc(100 / 428 * 20 * var(--vw));
   font-family: 'Sf Pro Display Regular', Arial, sans-serif;
-  color: #e5434e;
-  margin-bottom: calc(100 / 428 * 4 * var(--vw));
-}
-
-.year {
-  font-size: calc(100 / 428 * 16 * var(--vw));
   color: #8d8d92;
 }
 
@@ -103,8 +94,9 @@ body {
 
 
 .songs {
-  width: calc(100 / 428 * 408 * var(--vw));
-  margin-left: calc(100 / 428 * 20 * var(--vw));
+  /* width: calc(100 / 428 * 408 * var(--vw)); */
+  width: 100%;
+  /* margin-left: calc(100 / 428 * 20 * var(--vw)); */
   border-top: calc(100 / 428 * 1 * var(--vw)) solid #262528;
   border-bottom: calc(100 / 428 * 1 * var(--vw)) solid #262528;
 }
@@ -112,23 +104,24 @@ body {
 .song {
   display: flex;
   font-size: calc(100 / 428 * 20 * var(--vw));
+  font-family: 'Sf Pro Display Regular', Arial, sans-serif;
 }
 
 .number {
   text-align: center;
-  width: calc(100 / 428 * 30 * var(--vw));
+  width: calc(100 / 428 * 40 * var(--vw));
   color: #797980;
-  padding-top: calc(100 / 428 * 17 * var(--vw));
+  padding-top: calc(100 / 428 * 13 * var(--vw));
 }
 
 .song:first-child .number {
-  padding-top: calc(100 / 428 * 16 * var(--vw));
+  padding-top: calc(100 / 428 * 12 * var(--vw));
 }
 
 .song .title {
   display: flex;
   color: #fff;
-  padding: calc(100 / 428 * 16 * var(--vw)) 0 calc(100 / 428 * 16 * var(--vw)) 0;
+  padding: calc(100 / 428 * 12 * var(--vw)) 0 calc(100 / 428 * 12 * var(--vw)) 0;
   border-top: calc(100 / 428 * 1 * var(--vw)) solid #262528;
 }
 
@@ -137,7 +130,7 @@ body {
 }
 
 .song .title span {
-  width: calc(100 / 428 * 328 * var(--vw));
+  width: calc(100 / 428 * 338 * var(--vw));
 }
 
 .arrow {

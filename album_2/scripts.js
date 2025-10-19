@@ -96,14 +96,20 @@ const SafeAreaManager = (() => {
 })();
 
 
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
-  const albums = document.querySelector('.albums');
+  const cover = document.querySelector('.cover');
+  const songs = document.querySelector('.songs');
+
 
   SafeAreaManager.onChange = ({ top, bottom }) => {
-    const bottomValue = bottom === 0 ? 'calc((100 / 428) * 8 * var(--vw))' : `${bottom}px`;
+    const bottomValue = bottom === 0 ? 'calc((100 / 428) * 32 * var(--vw))' : `${bottom}px`;
     const topValue = top === 0 ? 'calc(100 / 428 * 16 * var(--vw))' : `${top}px`;
 
-    albums.style.marginTop = topValue
+    cover.style.marginTop = topValue
+    songs.style.marginBottom = bottomValue
   };
   SafeAreaManager.init();
 });
