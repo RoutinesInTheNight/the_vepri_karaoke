@@ -4,11 +4,6 @@
 }
 
 @font-face {
-  font-family: 'Sf Pro Display Medium';
-  src: url('../fonts/SFPRODISPLAYMEDIUM.OTF') format('truetype')
-}
-
-@font-face {
   font-family: 'Sf Pro Display Bold';
   src: url('../fonts/SFPRODISPLAYBOLD.OTF') format('truetype')
 }
@@ -36,25 +31,28 @@
   text-decoration: none;
 }
 
+
+
+
+
 body {
   background-color: black;
   overflow-x: hidden;
   overscroll-behavior: none;
   height: 100vh;
-  margin: 0;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  margin: 0 auto;
+  /* scrollbar-width: none; */
+  /* -ms-overflow-style: none; */
 }
-body::-webkit-scrollbar {
+
+/* body::-webkit-scrollbar {
   display: none;
 }
+
 html {
   overflow-x: hidden;
   overflow: hidden;
-}
-
-
-
+} */
 
 
 
@@ -101,12 +99,7 @@ html {
 
 
 
-
-
 .songs {
-  /* width: calc(100 / 428 * 408 * var(--vw)); */
-  width: 100%;
-  /* margin-left: calc(100 / 428 * 20 * var(--vw)); */
   border-top: calc(100 / 428 * 1 * var(--vw)) solid #262528;
   border-bottom: calc(100 / 428 * 1 * var(--vw)) solid #262528;
 }
@@ -155,8 +148,3 @@ html {
   height: calc(100 / 428 * 16 * var(--vw));
   flex-shrink: 0;
 }
-
-
-
-
-
