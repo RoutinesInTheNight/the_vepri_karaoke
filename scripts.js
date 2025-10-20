@@ -93,13 +93,13 @@ const SafeAreaManager = (() => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  const head = document.querySelector('.head');
+  const description = document.querySelector('.description');
 
   SafeAreaManager.onChange = ({ top, bottom }) => {
     const bottomValue = bottom === 0 ? 'calc((100 / 428) * 8 * var(--vw))' : `${bottom}px`;
-    const topValue = top === 0 ? 'calc(100 / 428 * 32 * var(--vw))' : `${top * 2}px`;
+    const topValue = top === 0 ? 'calc(100 / 428 * 16 * var(--vw))' : `${top}px`;
 
-    head.style.marginTop = topValue
+    description.style.marginTop = topValue
   };
   SafeAreaManager.init();
 });

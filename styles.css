@@ -43,31 +43,30 @@ body {
   overflow-x: hidden;
   overscroll-behavior: none;
   height: 100vh;
-  margin: 0;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  margin: 0 auto;
+  /* scrollbar-width: none; */
+  /* -ms-overflow-style: none; */
 }
 
-body::-webkit-scrollbar {
+/* body::-webkit-scrollbar {
   display: none;
 }
 
 html {
   overflow-x: hidden;
   overflow: hidden;
-}
+} */
 
 
-
-.head {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  font-family: 'Sf Pro Display Bold', Arial, sans-serif;
-  font-size: calc(100 / 428 * 32 * var(--vw));
-  color: #fff;
-  margin-bottom: calc(100 / 428 * 80 * var(--vw));
+.description {
+  width: calc(100 / 428 * 372 * var(--vw));
+  margin: 0 calc(100 / 428 * 20 * var(--vw)) calc(100 / 428 * 60 * var(--vw)) calc(100 / 428 * 20 * var(--vw));
+  padding: calc(100 / 428 * 8 * var(--vw));
+  border: calc(100 / 428 * 2 * var(--vw)) solid #7A7A81;
+  border-radius: calc(100 / 428 * 16 * var(--vw));
+  font-size: calc(100 / 428 * 16 * var(--vw));
+  font-family: 'Sf Pro Display Regular', Arial, sans-serif;
+  color: #7A7A81;
 }
 
 
