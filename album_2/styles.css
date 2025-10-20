@@ -99,12 +99,12 @@ html {
 
 
 
-.songs {
+.tracks {
   border-top: calc(100 / 428 * 1 * var(--vw)) solid #262528;
   border-bottom: calc(100 / 428 * 1 * var(--vw)) solid #262528;
 }
 
-.song {
+.track {
   display: flex;
   font-size: calc(100 / 428 * 20 * var(--vw));
   font-family: 'Sf Pro Display Regular', Arial, sans-serif;
@@ -117,22 +117,22 @@ html {
   padding-top: calc(100 / 428 * 13 * var(--vw));
 }
 
-.song:first-child .number {
+.track:first-child .number {
   padding-top: calc(100 / 428 * 12 * var(--vw));
 }
 
-.song .title {
+.track .title {
   display: flex;
   color: #fff;
   padding: calc(100 / 428 * 12 * var(--vw)) 0 calc(100 / 428 * 12 * var(--vw)) 0;
   border-top: calc(100 / 428 * 1 * var(--vw)) solid #262528;
 }
 
-.song:first-child .title {
+.track:first-child .title {
   border-top: none;
 }
 
-.song .title span {
+.track .title span {
   width: calc(100 / 428 * 338 * var(--vw));
 }
 
@@ -143,7 +143,7 @@ html {
   width: calc(100 / 428 * 50 * var(--vw));
 }
 
-.song svg {
+.track svg {
   width: calc(100 / 428 * 16 * var(--vw));
   height: calc(100 / 428 * 16 * var(--vw));
   flex-shrink: 0;
