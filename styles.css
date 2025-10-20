@@ -47,9 +47,11 @@ body {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
 body::-webkit-scrollbar {
   display: none;
 }
+
 html {
   overflow-x: hidden;
   overflow: hidden;
@@ -57,28 +59,37 @@ html {
 
 
 
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  font-family: 'Sf Pro Display Bold', Arial, sans-serif;
+  font-size: calc(100 / 428 * 32 * var(--vw));
+  color: #fff;
+  margin-bottom: calc(100 / 428 * 80 * var(--vw));
+}
 
-.albums,
-.singles {
+
+.content {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   row-gap: calc(100 / 428 * 20 * var(--vw));
   column-gap: calc(100 / 428 * 20 * var(--vw));
   width: calc(100 / 428 * 388 * var(--vw));
-  margin: calc(100 / 428 * 10 * var(--vw)) calc(100 / 428 * 20 * var(--vw)) calc(100 / 428 * 40 * var(--vw)) calc(100 / 428 * 20 * var(--vw));
+  margin: calc(100 / 428 * 10 * var(--vw)) calc(100 / 428 * 20 * var(--vw)) calc(100 / 428 * 60 * var(--vw)) calc(100 / 428 * 20 * var(--vw));
 }
 
 
-.albums img,
-.singles img {
+
+.content img {
   width: calc(100 / 428 * 184 * var(--vw));
   height: calc(100 / 428 * 184 * var(--vw));
   border-radius: calc(100 / 428 * 12 * var(--vw));
   object-fit: cover;
 }
 
-.albums span,
-.singles span {
+.content span {
   display: block;
   color: #fff;
   font-size: calc(100 / 428 * 18 * var(--vw));
@@ -86,21 +97,20 @@ html {
   flex: 1;
 }
 
-
-
-
-
-.head {
-  display: block;
-  font-size: calc(100 / 428 * 24 * var(--vw));
-  font-family: 'Sf Pro Display Medium', Arial, sans-serif;
-  color: #fff;
-  margin-left: calc(100 / 428 * 20 * var(--vw));
+.content span:last-child {
+  color: #7A7A81;
 }
 
 
 
 
-
-
-
+.sort {
+  font-size: calc(100 / 428 * 24 * var(--vw));
+  font-family: 'Sf Pro Display Medium', Arial, sans-serif;
+  color: #fff;
+  margin-left: calc(100 / 428 * 20 * var(--vw));
+}
+.sort span:last-child {
+  color: #7A7A81;
+  margin-left: calc(100 / 428 * 4 * var(--vw));
+}
