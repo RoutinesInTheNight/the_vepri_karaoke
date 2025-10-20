@@ -41,18 +41,18 @@ body {
   overscroll-behavior: none;
   height: 100vh;
   margin: 0 auto;
-  /* scrollbar-width: none; */
-  /* -ms-overflow-style: none; */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/* body::-webkit-scrollbar {
+body::-webkit-scrollbar {
   display: none;
 }
 
 html {
   overflow-x: hidden;
   overflow: hidden;
-} */
+}
 
 
 
