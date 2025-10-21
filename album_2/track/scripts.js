@@ -183,7 +183,7 @@ audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
   currentEl.textContent = formatTime(t);
   const pct = (t / audio.duration) * 100;
-  progress.style.width = ${Math.max(0, Math.min(100, pct))}%;
+  progress.style.width = `${Math.max(0, Math.min(100, pct))}%`;
 
   // ищем активный элемент (line или gap)
   const allItems = Array.from(document.querySelectorAll('#lines li'));
@@ -238,7 +238,7 @@ function setActive(idx) {
   const centerY = wrapRect.height / 2;
   const activeTop = activeLi.offsetTop;
   const offset = centerY - (activeTop + liHeight / 2);
-  linesList.style.transform = translateY(${offset}px);
+  linesList.style.transform = `translateY(${offset}px)`;
 }
 
 
