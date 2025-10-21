@@ -143,6 +143,18 @@ function createGapLi(start, end) {
   bg.appendChild(fill);
   li.appendChild(bg);
 
+  // вычисляем длительность gap и ширину
+  const gapDuration = end - start;
+
+  // если меньше 1 сек — 5%, если больше 10 сек — 100%, между ними — пропорционально
+  let widthPct;
+  if (gapDuration <= 1) widthPct = 5;
+  else if (gapDuration >= 10) widthPct = 100;
+  else widthPct = 5 + ((gapDuration - 1) / (10 - 1)) * (100 - 5);
+
+  li.style.width = `${widthPct}%`;
+  li.style.margin = 'auto'; // чтобы было по центру
+
   return li;
 }
 
