@@ -93,31 +93,32 @@ fetch(`../srt/${songNumber}.srt`)
 function rebuildLyrics() {
   linesList.innerHTML = '';
 
-  // добавим "пустую" полосу до первой строки, если нужно
+  let indexCounter = 0;
+
   const firstCueStart = cues[0]?.start || 0;
   if (firstCueStart > 0) {
     const gapLi = createGapLi(0, firstCueStart);
+    gapLi.dataset.index = indexCounter++;
     linesList.appendChild(gapLi);
   }
 
   for (let i = 0; i < cues.length; i++) {
     const c = cues[i];
 
-    // создаём обычную строчку
     const li = document.createElement('li');
     li.textContent = c.text;
-    li.dataset.index = i;
+    li.dataset.index = indexCounter++;
     li.dataset.start = c.start;
     li.dataset.end = c.end;
     li.classList.add('line');
     linesList.appendChild(li);
 
-    // если есть пауза до следующей строки, вставляем "gap"
     if (i < cues.length - 1) {
       const next = cues[i + 1];
       const gapDuration = next.start - c.end;
-      if (gapDuration > 0.01) { // минимальный порог
+      if (gapDuration > 0.01) {
         const gapLi = createGapLi(c.end, next.start);
+        gapLi.dataset.index = indexCounter++;
         linesList.appendChild(gapLi);
       }
     }
@@ -182,35 +183,24 @@ audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
   currentEl.textContent = formatTime(t);
   const pct = (t / audio.duration) * 100;
-  progress.style.width = `${Math.max(0, Math.min(100, pct))}%`;
+  progress.style.width = ${Math.max(0, Math.min(100, pct))}%;
 
-  // --- обновляем активную текстовую строку ---
-  let idx = cues.findIndex(c => t >= c.start && t < c.end);
-  if (idx === -1) {
-    if (t < cues[0].start) idx = null;           // до первой строки — ничего не выделяем
-    else if (t >= cues[cues.length - 1].end) idx = cues.length - 1;
-  }
+  // ищем активный элемент (line или gap)
+  const allItems = Array.from(document.querySelectorAll('#lines li'));
+  let newIndex = null;
 
-  if (idx !== activeIndex) {
-    setActive(idx);
-  }
-
-  // --- обновляем прогресс gap-полос ---
-  document.querySelectorAll('#lines li.gap').forEach(li => {
+  for (const li of allItems) {
     const start = parseFloat(li.dataset.start);
     const end = parseFloat(li.dataset.end);
-    const fill = li.querySelector('.gap-fill');
-    if (!fill) return;
-
-    if (t >= start && t <= end) {
-      const progress = ((t - start) / (end - start)) * 100;
-      fill.style.width = `${progress}%`;
-    } else if (t < start) {
-      fill.style.width = '0%';
-    } else if (t > end) {
-      fill.style.width = '100%';
+    if (t >= start && t < end) {
+      newIndex = parseInt(li.dataset.index);
+      break;
     }
-  });
+  }
+
+  if (newIndex !== activeIndex) setActive(newIndex);
+
+  updateGapFills(t);
 });
 
 
@@ -235,23 +225,20 @@ window.addEventListener('keydown', e => {
 function setActive(idx) {
   activeIndex = idx;
 
-  // Снимаем класс active со всех текстовых li
-  document.querySelectorAll('#lines li.line').forEach(li => li.classList.remove('active'));
+  document.querySelectorAll('#lines li').forEach(li => li.classList.remove('active'));
 
-  if (idx === null) return; // если нет активной строки — ничего не делаем
-
-  const activeLi = document.querySelector(`#lines li.line[data-index='${idx}']`);
+  if (idx === null) return;
+  const activeLi = document.querySelector(`#lines li[data-index='${idx}']`);
   if (!activeLi) return;
 
   activeLi.classList.add('active');
 
-  // Прокрутка: только для текстовых li
   const liHeight = activeLi.offsetHeight;
   const wrapRect = linesList.parentElement.getBoundingClientRect();
   const centerY = wrapRect.height / 2;
   const activeTop = activeLi.offsetTop;
   const offset = centerY - (activeTop + liHeight / 2);
-  linesList.style.transform = `translateY(${offset}px)`;
+  linesList.style.transform = translateY(${offset}px);
 }
 
 
