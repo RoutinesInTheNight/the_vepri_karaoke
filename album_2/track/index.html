@@ -11,7 +11,19 @@
 </head>
 
 <body>
+
+
+
+
     <div class="app not-playing" id="app">
+
+        <div class="track-info">
+            <img src="../../img/album-2.jpg">
+            <div>
+                <span>Звезда новой школы должна умереть 🅴</span>
+                <span>The Вепри</span>
+            </div>
+        </div>
 
         <div class="lyrics-wrap">
             <div class="lines">
@@ -20,25 +32,30 @@
         </div>
 
         <div class="controls">
+
             <div class="timeline-row">
-                <div class="time-left" id="current">0:00</div>
+
                 <div class="timeline" id="timeline" title="Seek">
                     <div class="progress" id="progress"></div>
                 </div>
-                <div class="time-right" id="duration">0:00</div>
+
+                <div class="track-time">
+                    <div class="time-left" id="current">0:00</div>
+                    <div class="time-right" id="duration">0:00</div>
+                </div>
+
+
             </div>
 
             <div class="btn-row">
                 <div class="play-btn" id="playBtn" aria-pressed="false" role="button">
-                    <!-- play icon (will toggle) -->
-                    <svg viewBox="0 0 24 24" id="playIcon">
-                        <path d="M8 5v14l11-7z"></path>
+                    <svg viewBox="0 0 640 640" id="playIcon">
+                        <path d="M187.2 100.9C174.8 94.1 159.8 94.4 147.6 101.6C135.4 108.8 128 121.9 128 136L128 504C128 518.1 135.5 531.2 147.6 538.4C159.7 545.6 174.8 545.9 187.2 539.1L523.2 355.1C536 348.1 544 334.6 544 320C544 305.4 536 291.9 523.2 284.9L187.2 100.9z"></path>
                     </svg>
                 </div>
             </div>
         </div>
 
-        <!-- Hidden audio element (song.mp3 must be next to index) -->
         <audio id="audio" preload="metadata"></audio>
     </div>
 

@@ -52,6 +52,109 @@ function hapticFeedback(type, redirectUrl) {
 }
 
 
+const SafeAreaManager = (() => {
+  let safeAreaTop = 0;
+  let safeAreaBottom = 0;
+  let contentSafeAreaTop = 0;
+  let contentSafeAreaBottom = 0;
+
+  function getTotalSafeAreas() {
+    return {
+      top: safeAreaTop + contentSafeAreaTop,
+      bottom: safeAreaBottom + contentSafeAreaBottom
+    };
+  }
+
+  function updateFromTelegram() {
+    const content = telegram.contentSafeAreaInset || {};
+    const system = telegram.safeAreaInset || {};
+
+    contentSafeAreaTop = content.top || 0;
+    contentSafeAreaBottom = content.bottom || 0;
+    safeAreaTop = system.top || 0;
+    safeAreaBottom = system.bottom || 0;
+  }
+
+  function init() {
+    const updateAndNotify = () => {
+      updateFromTelegram();
+      if (typeof SafeAreaManager.onChange === 'function') {
+        SafeAreaManager.onChange(getTotalSafeAreas());
+      }
+    };
+
+    telegram.onEvent('safeAreaChanged', updateAndNotify);
+    telegram.onEvent('contentSafeAreaChanged', updateAndNotify);
+    updateAndNotify();
+  }
+
+  return {
+    init,
+    getTotalSafeAreas,
+    onChange: null
+  };
+})();
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const trackInfo = document.querySelector('.track-info');
+  const controls = document.querySelector('.controls');
+  // const description = document.querySelector('.description');
+
+  SafeAreaManager.onChange = ({ top, bottom }) => {
+    const bottomValue = bottom === 0 ? 'calc((100 / 428) * 16 * var(--vw))' : `${bottom * 2}px`;
+    const topValue = top === 0 ? 'calc(100 / 428 * 16 * var(--vw))' : `${top}px`;
+
+    trackInfo.style.marginTop = topValue;
+    controls.style.paddingBottom = bottomValue;
+  };
+  SafeAreaManager.init();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Номер песни из ссылки
@@ -181,13 +284,13 @@ playBtn.addEventListener('click', () => {
 
 audio.addEventListener('play', () => {
   isPlaying = true;
-  playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; // pause
+  playIcon.innerHTML = '<path d="M176 96C149.5 96 128 117.5 128 144L128 496C128 522.5 149.5 544 176 544L240 544C266.5 544 288 522.5 288 496L288 144C288 117.5 266.5 96 240 96L176 96zM400 96C373.5 96 352 117.5 352 144L352 496C352 522.5 373.5 544 400 544L464 544C490.5 544 512 522.5 512 496L512 144C512 117.5 490.5 96 464 96L400 96z"></path>'; // pause
   app.classList.remove('not-playing');
 });
 
 audio.addEventListener('pause', () => {
   isPlaying = false;
-  playIcon.innerHTML = '<path d="M8 5v14l11-7z"></path>'; // play
+  playIcon.innerHTML = '<path d="M187.2 100.9C174.8 94.1 159.8 94.4 147.6 101.6C135.4 108.8 128 121.9 128 136L128 504C128 518.1 135.5 531.2 147.6 538.4C159.7 545.6 174.8 545.9 187.2 539.1L523.2 355.1C536 348.1 544 334.6 544 320C544 305.4 536 291.9 523.2 284.9L187.2 100.9z"></path>'; // play
   if (audio.currentTime === 0) app.classList.add('not-playing');
 });
 
@@ -268,7 +371,7 @@ linesList.addEventListener('click', e => {
 
 // --- Конец воспроизведения ---
 audio.addEventListener('ended', () => {
-  playIcon.innerHTML = '<path d="M8 5v14l11-7z"></path>';
+  playIcon.innerHTML = '<path d="M187.2 100.9C174.8 94.1 159.8 94.4 147.6 101.6C135.4 108.8 128 121.9 128 136L128 504C128 518.1 135.5 531.2 147.6 538.4C159.7 545.6 174.8 545.9 187.2 539.1L523.2 355.1C536 348.1 544 334.6 544 320C544 305.4 536 291.9 523.2 284.9L187.2 100.9z"></path>';
   app.classList.add('not-playing');
 });
 
