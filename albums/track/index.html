@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Karaoke timing player</title>
+    <!-- <script src="https://telegram.org/js/telegram-web-app.js"></script> -->
+    <script src="../../telegram-web-app.js"></script>
+    <link href="styles.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div class="app not-playing" id="app">
+
+        <div class="track-info">
+            <img>
+            <div>
+                <span class="track-title"></span>
+                <span class="track-artist"></span>
+            </div>
+        </div>
+
+        <div class="lyrics-wrap">
+            <div class="lines">
+                <ul class="lines-list" id="lines"></ul>
+            </div>
+        </div>
+
+        <div class="controls">
+
+            <div class="timeline-row">
+
+                <div class="timeline" id="timeline" title="Seek">
+                    <div class="progress" id="progress"></div>
+                </div>
+
+                <div class="track-time">
+                    <div class="time-left" id="current">0:00</div>
+                    <div class="time-right" id="duration">0:00</div>
+                </div>
+
+
+            </div>
+
+            <div class="btn-row">
+                <div class="play-btn" id="playBtn" aria-pressed="false" role="button">
+                    <svg viewBox="0 0 640 640" id="playIcon">
+                        <path d="M187.2 100.9C174.8 94.1 159.8 94.4 147.6 101.6C135.4 108.8 128 121.9 128 136L128 504C128 518.1 135.5 531.2 147.6 538.4C159.7 545.6 174.8 545.9 187.2 539.1L523.2 355.1C536 348.1 544 334.6 544 320C544 305.4 536 291.9 523.2 284.9L187.2 100.9z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <audio id="audio" preload="metadata"></audio>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+
+</html>
