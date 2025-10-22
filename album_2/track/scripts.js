@@ -46,9 +46,11 @@ function hapticFeedback(type, redirectUrl) {
         console.warn('Unknown haptic feedback type:', type);
     }
   }
-  setTimeout(() => {
-    window.location.href = redirectUrl;
-  }, 0);
+  if (redirectUrl && redirectUrl !== '#') {
+    setTimeout(() => {
+      window.location.href = redirectUrl;
+    }, 0);
+  }
 }
 
 
@@ -342,8 +344,6 @@ audio.addEventListener('timeupdate', () => {
   }
 
   if (newIndex !== activeIndex) setActive(newIndex);
-
-  updateGapFills(t);
 });
 
 
@@ -380,8 +380,9 @@ function setActive(idx) {
   const wrapRect = linesList.parentElement.getBoundingClientRect();
   const centerY = wrapRect.height / 2;
   const activeTop = activeLi.offsetTop;
-  const offset = centerY - (activeTop + liHeight / 2);
+  const offset = (centerY - (activeTop + liHeight / 2)) * 0.95;
   linesList.style.transform = `translateY(${offset}px)`;
+  hapticFeedback('change');
 }
 
 
