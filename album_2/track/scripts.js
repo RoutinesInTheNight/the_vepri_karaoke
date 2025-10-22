@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Номер песни из ссылки
 const urlParams = new URLSearchParams(window.location.search);
-const songNumber = urlParams.get('num') || '1'; // дефолт 1, если не указан
+const songNumber = urlParams.get('num') || '1';
 
 
 
@@ -178,6 +178,33 @@ const app = document.getElementById('app');
 
 audio.src = `../music/${songNumber}.mp3`;
 
+const trackTitle = document.querySelector('.track-title');
+const trackArtist = document.querySelector('.track-artist');
+
+const trackTitles = {
+  1: "Где ты 🅴",
+  2: "24101989 (feat. Валентина Лавриненко) 🅴",
+  3: 'Бар "Рагнарёк" (feat. ЗАМАЙ) 🅴',
+  4: "За моим компом",
+  5: "Мальчик-постмодернист 🅴",
+  6: "Юра 🅴",
+  7: "Ты",
+  8: "Омномном 🅴",
+  9: "Старый, толстый 🅴",
+  10: "Дикодэнс 🅴",
+  11: "Паранойя 🅴",
+  12: "Хеллоуин Инфанты 🅴",
+  13: "Скевоморфизм 🅴",
+  14: "Мемы и депрессия 🅴",
+  15: "Я 🅴",
+  16: "Песня о смерти 🅴",
+  17: "Видоизменённый углерод 🅴"
+}
+trackTitle.textContent = trackTitles[songNumber] ?? "Иди нахуй";
+trackArtist.textContent = `${songNumber} / 17`
+
+
+
 let cues = []; // сюда загрузим SRT
 let activeIndex = 0;
 let isPlaying = false;
@@ -191,6 +218,7 @@ fetch(`../srt/${songNumber}.srt`)
     requestAnimationFrame(animateGapBars);
   })
   .catch(err => console.error('Ошибка загрузки SRT:', err));
+
 
 // --- Функция пересборки списка ---
 function rebuildLyrics() {
