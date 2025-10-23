@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // const description = document.querySelector('.description');
 
   SafeAreaManager.onChange = ({ top, bottom }) => {
-    const bottomValue = bottom === 0 ? 'calc((100 / 428) * 16 * var(--vw))' : `${bottom * 2}px`;
+    const bottomValue = bottom === 0 ? 'calc((100 / 428) * 16 * var(--vw))' : `${bottom}px`;
     const topValue = top === 0 ? 'calc(100 / 428 * 16 * var(--vw))' : `${top}px`;
 
     trackInfo.style.marginTop = topValue;
@@ -340,6 +340,7 @@ audio.addEventListener('loadedmetadata', () => {
 playBtn.addEventListener('click', () => {
   if (audio.paused) audio.play();
   else audio.pause();
+  hapticFeedback('soft');
 });
 
 audio.addEventListener('play', () => {
@@ -383,7 +384,9 @@ timeline.addEventListener('click', e => {
   const rect = timeline.getBoundingClientRect();
   const x = e.clientX - rect.left;
   if (audio.duration) audio.currentTime = (x / rect.width) * audio.duration;
+  hapticFeedback('change');
 });
+
 
 // пробел для play/pause
 window.addEventListener('keydown', e => {
@@ -393,6 +396,9 @@ window.addEventListener('keydown', e => {
     else audio.pause();
   }
 });
+
+
+
 
 // --- Работа с активной строчкой ---
 function setActive(idx) {
@@ -412,26 +418,22 @@ function setActive(idx) {
   const activeTop = activeLi.offsetTop;
   const offset = (centerY - (activeTop + liHeight / 2)) * 0.95;
   linesList.style.transform = `translateY(${offset}px)`;
-
-  // Вибрация при смене строчки
-  setTimeout(() => {
-    hapticFeedback('change');
-  }, 50);
   
 }
 
 
 
-// клик по строчке для перехода
-linesList.addEventListener('click', e => {
-  const li = e.target.closest('li');
-  if (!li) return;
-  const i = Number(li.dataset.index);
-  if (cues[i]) {
-    audio.currentTime = cues[i].start + 0.001;
-    if (audio.paused) audio.play();
-  }
-});
+
+// Перемотка на 10 сек
+document.querySelector('.back-10-sec').addEventListener('click', () => {
+  audio.currentTime = Math.max(0, audio.currentTime - 10);
+  hapticFeedback('soft');
+})
+document.querySelector('.ahead-10-sec').addEventListener('click', () => {
+  audio.currentTime = Math.max(0, audio.currentTime + 10);
+  hapticFeedback('soft');
+})
+
 
 // --- Конец воспроизведения ---
 audio.addEventListener('ended', () => {
