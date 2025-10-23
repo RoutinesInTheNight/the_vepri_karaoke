@@ -416,7 +416,7 @@ function setActive(idx) {
   // Вибрация при смене строчки
   setTimeout(() => {
     hapticFeedback('change');
-  }, 500;)
+  }, 500);
   
 }
 
