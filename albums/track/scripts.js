@@ -182,8 +182,8 @@ const linesList = document.getElementById('lines');
 const app = document.getElementById('app');
 
 audio.src = `../${album}/music/${track}.mp3`;
-document.body.style.setProperty('--bg-image', `url("../../img/album-${album}.jpg")`);
-document.querySelector('.track-info img').src = `../../img/album-${album}.jpg`;
+document.body.style.setProperty('--bg-image', `url("img/album-${album}.jpg")`);
+document.querySelector('.track-info img').src = `img/album-${album}.jpg`;
 
 const tracks = {
   1: {
