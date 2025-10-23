@@ -412,7 +412,12 @@ function setActive(idx) {
   const activeTop = activeLi.offsetTop;
   const offset = (centerY - (activeTop + liHeight / 2)) * 0.95;
   linesList.style.transform = `translateY(${offset}px)`;
-  hapticFeedback('change');
+
+  // Вибрация при смене строчки
+  setTimeout(() => {
+    hapticFeedback('change');
+  }, 500;)
+  
 }
 
 
