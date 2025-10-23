@@ -197,7 +197,7 @@ body::before {
   /* justify-content: center; */
   flex-direction: column;
   width: 100%;
-  padding-top: calc(100 / 428 * 16 * var(--vw));
+  padding-top: calc(100 / 428 * 32 * var(--vw));
 }
 
 .timeline-row {
