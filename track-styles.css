@@ -157,7 +157,9 @@ body::before {
   align-items: center;
   justify-content: center;
   text-align: center;
+  font-family: 'Sf Pro Display Bold', Arial, sans-serif;
   font-size: calc(100 / 428 * 24 * var(--vw));
+  color: #fff;
   margin: calc(100 / 428 * 32 * var(--vw)) 0 calc(100 / 428 * 32 * var(--vw)) 0;
   opacity: 0.25;
   transition: transform .75s ease-in-out, opacity .5s ease-in-out;
