@@ -1,10 +1,15 @@
+const urlParams = new URLSearchParams(window.location.search);
+const album = urlParams.get('album') || '1';
+const track = urlParams.get('track') || '1';
+
+
 const telegram = window.Telegram.WebApp;
 const DEVICE_TYPE = telegram.platform;
 
 telegram.expand();
 if (telegram.isVersionAtLeast("6.1")) {
   telegram.BackButton.show()
-  telegram.BackButton.onClick(() => hapticFeedback('soft', '../'));
+  telegram.BackButton.onClick(() => hapticFeedback('soft', `../?album=${album}`));
 }
 if (telegram.isVersionAtLeast("7.7")) telegram.disableVerticalSwipes();
 if (telegram.isVersionAtLeast("8.0")) {
@@ -159,11 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-// Номер песни из ссылки
-const urlParams = new URLSearchParams(window.location.search);
-const album = urlParams.get('album') || '1';
-const track = urlParams.get('track') || '1';
-
 
 
 
@@ -234,6 +234,22 @@ const tracks = {
 }
 trackTitle.textContent = tracks[album][track];
 trackArtist.textContent = `${track} / ${Object.keys(tracks[album]).length}`;
+
+
+
+
+
+// Переметка на другую песню
+document.querySelector('.prev-song').addEventListener('click', () => {
+  if (+track === 1) hapticFeedback('soft', `?album=${album}&track=${Object.keys(tracks[album]).length}`);
+  else hapticFeedback('soft', `?album=${album}&track=${+track - 1}`);
+})
+document.querySelector('.next-song').addEventListener('click', () => {
+  if (+track === Object.keys(tracks[album]).length) hapticFeedback('soft', `?album=${album}&track=1`);
+  else hapticFeedback('soft', `?album=${album}&track=${+track + 1}`);
+})
+
+
 
 
 
@@ -338,9 +354,9 @@ audio.addEventListener('loadedmetadata', () => {
 });
 
 playBtn.addEventListener('click', () => {
+  hapticFeedback('soft');
   if (audio.paused) audio.play();
   else audio.pause();
-  hapticFeedback('soft');
 });
 
 audio.addEventListener('play', () => {
@@ -418,7 +434,7 @@ function setActive(idx) {
   const activeTop = activeLi.offsetTop;
   const offset = (centerY - (activeTop + liHeight / 2)) * 0.95;
   linesList.style.transform = `translateY(${offset}px)`;
-  
+
 }
 
 
