@@ -93,6 +93,7 @@ body::before {
   width: calc(100 / 428 * 72 * var(--vw));
   height: calc(100 / 428 * 72 * var(--vw));
   border-radius: calc(100 / 428 * 5 * var(--vw));
+  box-shadow: 0 0 calc(100 / 428 * 32 * var(--vw)) rgba(0, 0, 0, .5);
 }
 
 .track-info div span {
@@ -251,13 +252,14 @@ body::before {
 .btn-row {
   display: flex;
   align-items: center;
-  justify-content: center
+  justify-content: space-between;
+  width: calc(100 / 428 * 364 * var(--vw));
 }
 
-.play-btn {
-  width: calc(100 / 428 * 67 * var(--vw));
+.btn-row div {
+  width: calc(100 / 428 * 364 / 5 * var(--vw));
   height: calc(100 / 428 * 67 * var(--vw));
-  border-radius: 999px;
+  /* border-radius: 999px; */
   /* background: rgba(255, 255, 255, .25); */
   display: flex;
   align-items: center;
@@ -265,9 +267,18 @@ body::before {
   cursor: pointer;
 }
 
-.play-btn svg {
+.play-pause svg {
   width: calc(100 / 428 * 51.5 * var(--vw));
   height: calc(100 / 428 * 51.5 * var(--vw));
+  fill: #fff;
+}
+
+.prev-song svg,
+.next-song svg,
+.back-10-sec svg,
+.ahead-10-sec svg {
+  width: calc(100 / 428 * 36 * var(--vw));
+  height: calc(100 / 428 * 36 * var(--vw));
   fill: #fff;
 }
 
