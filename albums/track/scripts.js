@@ -432,7 +432,7 @@ function setActive(idx) {
   const centerY = wrapRect.height / 2;
   const activeTop = activeLi.offsetTop;
   const offset = centerY - (activeTop + liHeight / 2);
-  linesList.style.transform = `translateY(calc(${offset}px + (25 * var(--vw))))`;
+  linesList.style.transform = `translateY(calc(${offset}px - (100 /3  * var(--vw))))`;
 
   console.log(`liHeight: ${liHeight}`)
   console.log(`centerY: ${centerY}`)
