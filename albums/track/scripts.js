@@ -168,22 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-// --- DOM ---
-const trackTitle = document.querySelector('.track-title');
-const trackArtist = document.querySelector('.track-artist');
-const audio = document.getElementById('audio');
-const playBtn = document.getElementById('playBtn');
-const playIcon = document.getElementById('playIcon');
-const currentEl = document.getElementById('current');
-const durationEl = document.getElementById('duration');
-const progress = document.getElementById('progress');
-const timeline = document.getElementById('timeline');
-const linesList = document.getElementById('lines');
-const app = document.getElementById('app');
 
-audio.src = `../${album}/music/${track}.mp3`;
-document.body.style.setProperty('--bg-image', `url("img/album-${album}.jpg")`);
-document.querySelector('.track-info img').src = `../../img/album-${album}.jpg`;
+
 
 const tracks = {
   1: {
@@ -232,8 +218,20 @@ const tracks = {
     10: "Туманный мир 🅴"
   }
 }
-trackTitle.textContent = tracks[album][track];
-trackArtist.textContent = `${track} / ${Object.keys(tracks[album]).length}`;
+
+const audio = document.getElementById('audio');
+const playIcon = document.getElementById('playIcon');
+const timeline = document.getElementById('timeline');
+const linesList = document.getElementById('lines');
+const app = document.getElementById('app');
+
+audio.src = `../${album}/music/${track}.mp3`;
+
+document.body.style.setProperty('--bg-image', `url("img/album-${album}.jpg")`);
+
+document.querySelector('.track-info img').src = `../../img/album-${album}.jpg`;
+document.querySelector('.track-info .title').textContent = tracks[album][track];
+document.querySelector('.track-info .num').textContent = `${track} / ${Object.keys(tracks[album]).length}`;
 
 
 
@@ -264,7 +262,6 @@ fetch(`../${album}/srt/${track}.srt`)
     cues = parseSRT(text);
     rebuildLyrics();
     requestAnimationFrame(animateGapBars);
-    requestAnimationFrame(animateTimeline);
   })
   .catch(err => console.error('Ошибка загрузки SRT:', err));
 
@@ -351,10 +348,10 @@ function formatTime(t) {
 
 // --- Аудио ---
 audio.addEventListener('loadedmetadata', () => {
-  durationEl.textContent = formatTime(audio.duration);
+  document.getElementById('duration').textContent = formatTime(audio.duration);
 });
 
-playBtn.addEventListener('click', () => {
+document.getElementById('playBtn').addEventListener('click', () => {
   hapticFeedback('soft');
   if (audio.paused) audio.play();
   else audio.pause();
@@ -363,21 +360,21 @@ playBtn.addEventListener('click', () => {
 
 audio.addEventListener('play', () => {
   isPlaying = true;
-  playIcon.innerHTML = '<path d="M176 96C149.5 96 128 117.5 128 144L128 496C128 522.5 149.5 544 176 544L240 544C266.5 544 288 522.5 288 496L288 144C288 117.5 266.5 96 240 96L176 96zM400 96C373.5 96 352 117.5 352 144L352 496C352 522.5 373.5 544 400 544L464 544C490.5 544 512 522.5 512 496L512 144C512 117.5 490.5 96 464 96L400 96z"></path>'; // pause
+  playIcon.innerHTML = '<path d="M176 96C149.5 96 128 117.5 128 144L128 496C128 522.5 149.5 544 176 544L240 544C266.5 544 288 522.5 288 496L288 144C288 117.5 266.5 96 240 96L176 96zM400 96C373.5 96 352 117.5 352 144L352 496C352 522.5 373.5 544 400 544L464 544C490.5 544 512 522.5 512 496L512 144C512 117.5 490.5 96 464 96L400 96z"></path>';
   app.classList.remove('not-playing');
 });
 
 audio.addEventListener('pause', () => {
   isPlaying = false;
-  playIcon.innerHTML = '<path d="M187.2 100.9C174.8 94.1 159.8 94.4 147.6 101.6C135.4 108.8 128 121.9 128 136L128 504C128 518.1 135.5 531.2 147.6 538.4C159.7 545.6 174.8 545.9 187.2 539.1L523.2 355.1C536 348.1 544 334.6 544 320C544 305.4 536 291.9 523.2 284.9L187.2 100.9z"></path>'; // play
+  playIcon.innerHTML = '<path d="M187.2 100.9C174.8 94.1 159.8 94.4 147.6 101.6C135.4 108.8 128 121.9 128 136L128 504C128 518.1 135.5 531.2 147.6 538.4C159.7 545.6 174.8 545.9 187.2 539.1L523.2 355.1C536 348.1 544 334.6 544 320C544 305.4 536 291.9 523.2 284.9L187.2 100.9z"></path>';
   if (audio.currentTime === 0) app.classList.add('not-playing');
 });
 
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
-  currentEl.textContent = formatTime(t);
-  // const pct = (t / audio.duration) * 100;
-  // progress.style.width = `${Math.max(0, Math.min(100, pct))}%`;
+  document.getElementById('current').textContent = formatTime(t);
+  const pct = (t / audio.duration) * 100;
+  document.getElementById('progress').style.width = `${Math.max(0, Math.min(100, pct))}%`;
 
   // ищем активный элемент (line или gap)
   const allItems = Array.from(document.querySelectorAll('#lines li'));
@@ -514,14 +511,4 @@ function animateGapBars() {
   });
 
   requestAnimationFrame(animateGapBars);
-}
-
-
-function animateTimeline() {
-  const t = audio.currentTime;
-  if (audio.duration) {
-    const pct = (t / audio.duration) * 100;
-    progress.style.width = `${Math.max(0, Math.min(100, pct))}%`;
-  }
-  requestAnimationFrame(animateTimeline);
 }
