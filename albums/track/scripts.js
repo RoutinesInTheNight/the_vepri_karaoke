@@ -429,9 +429,9 @@ function setActive(idx) {
 
   const liHeight = activeLi.offsetHeight;
   const wrapRect = linesList.parentElement.getBoundingClientRect();
-  const centerY = wrapRect.height / 2;
+  const centerY = wrapRect.height / 2 * 1.25;
   const activeTop = activeLi.offsetTop;
-  const offset = (centerY - (activeTop + liHeight / 2)) * 0.8;
+  const offset = centerY - (activeTop + liHeight / 2);
   linesList.style.transform = `translateY(${offset}px)`;
 
 }
