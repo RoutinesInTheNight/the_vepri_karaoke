@@ -14,10 +14,6 @@
 }
 
 :root {
-  --bg: #0f1115;
-  --muted: #8b8b8b;
-  --accent: #ffffff;
-
   --body-width: 100vw;
   --vw: calc(var(--body-width) / 100);
 }
@@ -70,7 +66,6 @@ body::before {
 .track-info {
   display: flex;
   align-items: center;
-  /* position: fixed; */
   top: 0;
   width: calc(100 / 428 * 364 * var(--vw));
   padding: 0 calc(100 / 428 * 32 * var(--vw)) calc(100 / 428 * 16 * var(--vw)) calc(100 / 428 * 32 * var(--vw));
