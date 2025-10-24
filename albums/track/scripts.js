@@ -429,10 +429,18 @@ function setActive(idx) {
 
   const liHeight = activeLi.offsetHeight;
   const wrapRect = linesList.parentElement.getBoundingClientRect();
-  const centerY = wrapRect.height / 2 * 1.25;
+  const centerY = wrapRect.height / 2;
   const activeTop = activeLi.offsetTop;
   const offset = centerY - (activeTop + liHeight / 2);
   linesList.style.transform = `translateY(${offset}px)`;
+
+  console.log(`liHeight: ${liHeight}`)
+  console.log(`wrapRect: ${wrapRect}`)
+  console.log(`centerY: ${centerY}`)
+  console.log(`activeTop: ${activeTop}`)
+  console.log(`offset: ${offset}`)
+  // console.log(`liHeight: ${liHeight}`)
+  // console.log(`liHeight: ${liHeight}`)
 
 }
 
