@@ -435,10 +435,10 @@ function setActive(idx) {
   linesList.style.transform = `translateY(${offset}px)`;
 
   console.log(`liHeight: ${liHeight}`)
-  console.log(`wrapRect: ${wrapRect}`)
   console.log(`centerY: ${centerY}`)
   console.log(`activeTop: ${activeTop}`)
   console.log(`offset: ${offset}`)
+  console.log("-----")
   // console.log(`liHeight: ${liHeight}`)
   // console.log(`liHeight: ${liHeight}`)
 
