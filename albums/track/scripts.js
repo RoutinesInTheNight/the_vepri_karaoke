@@ -264,6 +264,7 @@ fetch(`../${album}/srt/${track}.srt`)
     cues = parseSRT(text);
     rebuildLyrics();
     requestAnimationFrame(animateGapBars);
+    requestAnimationFrame(animateTimeline);
   })
   .catch(err => console.error('Ошибка загрузки SRT:', err));
 
@@ -375,8 +376,8 @@ audio.addEventListener('pause', () => {
 audio.addEventListener('timeupdate', () => {
   const t = audio.currentTime;
   currentEl.textContent = formatTime(t);
-  const pct = (t / audio.duration) * 100;
-  progress.style.width = `${Math.max(0, Math.min(100, pct))}%`;
+  // const pct = (t / audio.duration) * 100;
+  // progress.style.width = `${Math.max(0, Math.min(100, pct))}%`;
 
   // ищем активный элемент (line или gap)
   const allItems = Array.from(document.querySelectorAll('#lines li'));
@@ -513,4 +514,14 @@ function animateGapBars() {
   });
 
   requestAnimationFrame(animateGapBars);
+}
+
+
+function animateTimeline() {
+  const t = audio.currentTime;
+  if (audio.duration) {
+    const pct = (t / audio.duration) * 100;
+    progress.style.width = `${Math.max(0, Math.min(100, pct))}%`;
+  }
+  requestAnimationFrame(animateTimeline);
 }
