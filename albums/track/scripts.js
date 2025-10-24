@@ -432,7 +432,7 @@ function setActive(idx) {
   const centerY = wrapRect.height / 2;
   const activeTop = activeLi.offsetTop;
   const offset = centerY - (activeTop + liHeight / 2);
-  linesList.style.transform = `translateY(calc(${offset}px - (50 * var(--vw))))`;
+  linesList.style.transform = `translateY(calc(${offset}px - (25 * var(--vw))))`;
 
   console.log(`liHeight: ${liHeight}`)
   console.log(`centerY: ${centerY}`)
@@ -450,11 +450,11 @@ function setActive(idx) {
 // Перемотка на 10 сек
 document.querySelector('.back-10-sec').addEventListener('click', () => {
   audio.currentTime = Math.max(0, audio.currentTime - 10);
-  hapticFeedback('soft');
+  hapticFeedback('change');
 })
 document.querySelector('.ahead-10-sec').addEventListener('click', () => {
   audio.currentTime = Math.max(0, audio.currentTime + 10);
-  hapticFeedback('soft');
+  hapticFeedback('change');
 })
 
 
