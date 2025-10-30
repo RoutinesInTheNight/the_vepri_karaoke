@@ -1,0 +1,663 @@
+const urlParams = new URLSearchParams(window.location.search);
+const album = urlParams.get('album') || null;
+const track = urlParams.get('track') || null;
+const group = urlParams.get('group') || null;
+
+const telegram = window.Telegram.WebApp;
+const DEVICE_TYPE = telegram.platform;
+
+telegram.expand();
+if (telegram.isVersionAtLeast("6.1")) {
+  telegram.BackButton.show()
+  if (album === null) telegram.BackButton.onClick(() => hapticFeedback('soft', `../`));
+  else telegram.BackButton.onClick(() => hapticFeedback('soft', `../?album=${album}`));
+}
+if (telegram.isVersionAtLeast("7.7")) telegram.disableVerticalSwipes();
+if (telegram.isVersionAtLeast("8.0")) {
+  telegram.requestFullscreen();
+}
+
+
+function hapticFeedback(type, redirectUrl) {
+  if (telegram.isVersionAtLeast("6.1") && (DEVICE_TYPE === 'android' || DEVICE_TYPE === 'ios')) {
+    switch (type) {
+      case 'light':
+        telegram.HapticFeedback.impactOccurred('light');
+        break;
+      case 'medium':
+        telegram.HapticFeedback.impactOccurred('medium');
+        break;
+      case 'heavy':
+        telegram.HapticFeedback.impactOccurred('heavy');
+        break;
+      case 'rigid':
+        telegram.HapticFeedback.impactOccurred('rigid');
+        break;
+      case 'soft':
+        telegram.HapticFeedback.impactOccurred('soft');
+        break;
+      case 'error':
+        telegram.HapticFeedback.notificationOccurred('error');
+        break;
+      case 'success':
+        telegram.HapticFeedback.notificationOccurred('success');
+        break;
+      case 'warning':
+        telegram.HapticFeedback.notificationOccurred('warning');
+        break;
+      case 'change':
+        telegram.HapticFeedback.selectionChanged();
+        break;
+      default:
+        console.warn('Unknown haptic feedback type:', type);
+    }
+  }
+  if (redirectUrl && redirectUrl !== '#') {
+    setTimeout(() => {
+      window.location.href = redirectUrl;
+    }, 0);
+  }
+}
+
+
+const SafeAreaManager = (() => {
+  let safeAreaTop = 0;
+  let safeAreaBottom = 0;
+  let contentSafeAreaTop = 0;
+  let contentSafeAreaBottom = 0;
+
+  function getTotalSafeAreas() {
+    return {
+      top: safeAreaTop + contentSafeAreaTop,
+      bottom: safeAreaBottom + contentSafeAreaBottom
+    };
+  }
+
+  function updateFromTelegram() {
+    const content = telegram.contentSafeAreaInset || {};
+    const system = telegram.safeAreaInset || {};
+
+    contentSafeAreaTop = content.top || 0;
+    contentSafeAreaBottom = content.bottom || 0;
+    safeAreaTop = system.top || 0;
+    safeAreaBottom = system.bottom || 0;
+  }
+
+  function init() {
+    const updateAndNotify = () => {
+      updateFromTelegram();
+      if (typeof SafeAreaManager.onChange === 'function') {
+        SafeAreaManager.onChange(getTotalSafeAreas());
+      }
+    };
+
+    telegram.onEvent('safeAreaChanged', updateAndNotify);
+    telegram.onEvent('contentSafeAreaChanged', updateAndNotify);
+    updateAndNotify();
+  }
+
+  return {
+    init,
+    getTotalSafeAreas,
+    onChange: null
+  };
+})();
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const trackInfo = document.querySelector('.track-info');
+  const controls = document.querySelector('.controls');
+  // const description = document.querySelector('.description');
+
+  SafeAreaManager.onChange = ({ top, bottom }) => {
+    const bottomValue = bottom === 0 ? 'calc((100 / 428) * 16 * var(--vw))' : `${bottom}px`;
+    const topValue = top === 0 ? 'calc(100 / 428 * 16 * var(--vw))' : `${top}px`;
+
+    trackInfo.style.marginTop = topValue;
+    controls.style.paddingBottom = bottomValue;
+  };
+  SafeAreaManager.init();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const albumsInfo = {
+  0: {
+    "title": "Вечный Поперечный",
+    "tracks": {
+      1: "Ледовый и Марионетки 🅴",
+      2: "Воруй 🅴",
+      3: "Популярность 🅴",
+      4: "Сапсанокири 🅴",
+      5: "Мало значишь 🅴",
+      6: "Улетай, Поперечный 🅴",
+      7: "Песня зрителя YouTube 🅴"
+    }
+  },
+  1: {
+    "title": "Студийные герои",
+    "tracks": {
+      1: "Консьюмеризм 🅴",
+      2: "Деньги 🅴",
+      3: "Сосочка 🅴",
+      4: "Звезда новой школы должна умереть 🅴",
+      5: "Кто такой Гусейн Гасанов? 🅴",
+      6: "И снова, спасибо тебе 🅴",
+      7: "И опять гулять 🅴",
+      8: "Рок мёртв. Всё ещё 🅴",
+      9: "Ты идёшь по снегу 🅴",
+      10: "Бэкап 🅴",
+      11: "Твой краш 🅴",
+      12: "Паттерн 🅴"
+    }
+  },
+  2: {
+    "title": "Мемы и депрессия",
+    "tracks": {
+      1: "Где ты 🅴",
+      2: "24101989 (feat. Валентина Лавриненко) 🅴",
+      3: 'Бар "Рагнарёк" (feat. ЗАМАЙ) 🅴',
+      4: "За моим компом",
+      5: "Мальчик-постмодернист 🅴",
+      6: "Юра 🅴",
+      7: "Ты",
+      8: "Омномном 🅴",
+      9: "Старый, толстый 🅴",
+      10: "Дикодэнс 🅴",
+      11: "Паранойя 🅴",
+      12: "Хеллоуин Инфанты 🅴",
+      13: "Скевоморфизм 🅴",
+      14: "Мемы и депрессия 🅴",
+      15: "Я 🅴",
+      16: "Песня о смерти 🅴",
+      17: "Видоизменённый углерод 🅴"
+    }
+  },
+  3: {
+    "title": "CAPITALISTIC SWINE GRINDCORE",
+    "tracks": {
+      1: "Стамбул 2025 🅴",
+      2: "Ragnarok 🅴",
+      3: "Панк 🅴",
+      4: "Штефангейт 🅴",
+      5: "Памяти Алексея Навального 🅴",
+      6: "Покупай 🅴",
+      7: "Америка 🅴",
+      8: "GPT 🅴",
+      9: "Крылья 🅴",
+      10: "Туманный мир 🅴",
+      11: "Ragnarok 🅴 (оригинал)",
+      12: "Панк 🅴 (оригинал)",
+      13: "Штефангейт 🅴 (оригинал)",
+      14: "Памяти Алексея Навального 🅴 (оригинал)",
+      15: "Покупай 🅴 (оригинал)",
+      16: "Америка 🅴 (оригинал)",
+      17: "GPT 🅴 (оригинал)",
+      18: "Крылья 🅴 (оригинал)",
+      19: "Туманный мир 🅴 (оригинал)"
+    }
+  },
+  "official": {
+    "title": "Синглы",
+    "tracks": {
+      1: "Юрий Дудь 🅴",
+      2: "Рок мёртв 🅴",
+      3: "Кем-то 🅴",
+      4: "Спасибо тебе 🅴",
+      5: "Дик пик 🅴",
+      6: "Гулять 🅴",
+      7: "Генетический код 🅴",
+      8: "Полный курс социал-дарвинизма 🅴",
+      9: "2022 🅴",
+      10: "Синдром Кассандры 🅴",
+      11: "Кацево сердце 🅴",
+      12: "Белым цветом отцвели деревья 🅴",
+      13: "Контора 🅴"
+    }
+  },
+  "unofficial": {
+    "title": "Неофициальные синглы",
+    "tracks": {
+      1: "Ты и я против мира 🅴",
+      2: "Северный поток 3 🅴",
+      3: "Я русский 🅴",
+      4: "Я русский (оригинал) 🅴"
+    }
+  },
+  "sator1": {
+    "title": "Синглы",
+    "tracks": {
+      1: "0000000000000000 🅴",
+      2: "0000000000000000 🅴",
+      3: "0000000000000000 🅴",
+      4: "0000000000000000 🅴",
+      5: "0000000000000000 🅴",
+      6: "0000000000000000 🅴",
+      7: "0000000000000000 🅴",
+      8: "0000000000000000 🅴",
+      9: "0000000000000000 🅴",
+      10: "0000000000000000 🅴",
+      11: "0000000000000000 🅴",
+      12: "0000000000000000 🅴",
+      13: "0000000000000000 🅴"
+    }
+  }
+}
+
+const instrumental = document.getElementById('instrumental');
+const playIcon = document.getElementById('playIcon');
+const timeline = document.getElementById('timeline');
+const linesList = document.getElementById('lines');
+const app = document.getElementById('app');
+
+if (album === null) {
+  instrumental.src = `music_${group}/${track}.mp3`;
+  document.body.style.setProperty('--bg-image', `url("img/single-${track}-${group}.jpg")`);
+  document.querySelector('.track-info img').src = `../img/single-${track}-${group}.jpg`;
+  document.querySelector('.track-info .title').textContent = albumsInfo[group].tracks[track];
+  document.querySelector('.track-info .num').textContent = `${track} / ${Object.keys(albumsInfo[group].tracks).length} (${albumsInfo[group].title})`;
+
+} else {
+  instrumental.src = `../${album}/music/${track}.mp3`;
+  document.body.style.setProperty('--bg-image', `url("img/album-${album}.jpg")`);
+  document.querySelector('.track-info img').src = `../../img/album-${album}.jpg`;
+  document.querySelector('.track-info .title').textContent = albumsInfo[album].tracks[track];
+  document.querySelector('.track-info .num').textContent = `${track} / ${Object.keys(albumsInfo[album].tracks).length} (${albumsInfo[album].title})`;
+}
+
+
+
+
+
+
+
+
+
+
+
+// Перемотка на другую песню
+document.querySelector('.prev-song').addEventListener('click', () => {
+  if (album === null) {
+    if (+track === 1) hapticFeedback('soft', `?album=${album}&track=${Object.keys(albumsInfo[group].tracks).length}`);
+    else hapticFeedback('soft', `?group=${group}&track=${+track - 1}`);
+
+  } else {
+    if (+track === 1) hapticFeedback('soft', `?album=${album}&track=${Object.keys(albumsInfo[album].tracks).length}`);
+    else hapticFeedback('soft', `?album=${album}&track=${+track - 1}`);
+  }
+})
+document.querySelector('.next-song').addEventListener('click', () => {
+  if (album === null) {
+    if (+track === Object.keys(albumsInfo[album].tracks).length) hapticFeedback('soft', `?album=${group}&track=1`);
+    else hapticFeedback('soft', `?group=${group}&track=${+track + 1}`);
+  } else {
+    if (+track === Object.keys(albumsInfo[album].tracks).length) hapticFeedback('soft', `?album=${album}&track=1`);
+    else hapticFeedback('soft', `?album=${album}&track=${+track + 1}`);
+  }
+})
+
+
+
+
+
+let cues = []; // сюда загрузим SRT
+let activeIndex = 0;
+let isPlaying = false;
+
+// --- Загрузка SRT ---
+let srtPath = null;
+if (album === null) srtPath = `srt_${group}/${track}.srt`;
+else srtPath = `../${album}/srt/${track}.srt`;
+
+fetch(srtPath)
+  .then(r => r.text())
+  .then(text => {
+    cues = parseSRT(text);
+    rebuildLyrics();
+    requestAnimationFrame(animateGapBars);
+  })
+  .catch(err => console.error('Ошибка загрузки SRT:', err));
+
+
+// --- Функция пересборки списка ---
+function rebuildLyrics() {
+  linesList.innerHTML = '';
+
+  let indexCounter = 0;
+
+  const firstCueStart = cues[0]?.start || 0;
+  if (firstCueStart > 0) {
+    const gapLi = createGapLi(0, firstCueStart);
+    gapLi.dataset.index = indexCounter++;
+    linesList.appendChild(gapLi);
+  }
+
+  for (let i = 0; i < cues.length; i++) {
+    const c = cues[i];
+
+    const li = document.createElement('li');
+    li.textContent = c.text;
+    li.dataset.index = indexCounter++;
+    li.dataset.start = c.start;
+    li.dataset.end = c.end;
+    li.classList.add('line');
+    linesList.appendChild(li);
+
+    if (i < cues.length - 1) {
+      const next = cues[i + 1];
+      const gapDuration = next.start - c.end;
+      if (gapDuration > 0.01) {
+        const gapLi = createGapLi(c.end, next.start);
+        gapLi.dataset.index = indexCounter++;
+        linesList.appendChild(gapLi);
+      }
+    }
+  }
+
+  setActive(0);
+}
+
+// функция создания полосы "gap"
+function createGapLi(start, end) {
+  const li = document.createElement('li');
+  li.classList.add('gap');
+  li.dataset.start = start;
+  li.dataset.end = end;
+
+  const bg = document.createElement('div');
+  bg.classList.add('gap-bg');
+
+  const fill = document.createElement('div');
+  fill.classList.add('gap-fill');
+
+  bg.appendChild(fill);
+  li.appendChild(bg);
+
+  // вычисляем длительность gap и ширину
+  const gapDuration = end - start;
+
+  // если меньше 1 сек — 5%, если больше 10 сек — 100%, между ними — пропорционально
+  let widthPct;
+  if (gapDuration <= 1) widthPct = 5;
+  else if (gapDuration >= 10) widthPct = 100;
+  else widthPct = 5 + ((gapDuration - 1) / (10 - 1)) * (100 - 5);
+
+  li.style.width = `${widthPct}%`;
+  li.style.margin = 'auto'; // чтобы было по центру
+
+  return li;
+}
+
+
+
+
+// --- Вспомогательные функции ---
+function formatTime(t) {
+  if (!isFinite(t)) return '0:00';
+  const m = Math.floor(t / 60);
+  const s = Math.floor(t % 60).toString().padStart(2, '0');
+  return `${m}:${s}`;
+}
+
+
+
+
+
+
+
+instrumental.addEventListener('loadedmetadata', () => {
+  document.getElementById('duration').textContent = formatTime(instrumental.duration);
+});
+
+document.getElementById('playBtn').addEventListener('click', () => {
+  hapticFeedback('soft');
+  if (instrumental.paused) instrumental.play();
+  else instrumental.pause();
+});
+
+
+instrumental.addEventListener('play', () => {
+  isPlaying = true;
+  playIcon.innerHTML = '<path d="M176 96C149.5 96 128 117.5 128 144L128 496C128 522.5 149.5 544 176 544L240 544C266.5 544 288 522.5 288 496L288 144C288 117.5 266.5 96 240 96L176 96zM400 96C373.5 96 352 117.5 352 144L352 496C352 522.5 373.5 544 400 544L464 544C490.5 544 512 522.5 512 496L512 144C512 117.5 490.5 96 464 96L400 96z"></path>';
+  app.classList.remove('not-playing');
+});
+
+instrumental.addEventListener('pause', () => {
+  isPlaying = false;
+  playIcon.innerHTML = '<path d="M187.2 100.9C174.8 94.1 159.8 94.4 147.6 101.6C135.4 108.8 128 121.9 128 136L128 504C128 518.1 135.5 531.2 147.6 538.4C159.7 545.6 174.8 545.9 187.2 539.1L523.2 355.1C536 348.1 544 334.6 544 320C544 305.4 536 291.9 523.2 284.9L187.2 100.9z"></path>';
+  if (instrumental.currentTime === 0) app.classList.add('not-playing');
+});
+
+instrumental.addEventListener('timeupdate', () => {
+  const t = instrumental.currentTime;
+  document.getElementById('current').textContent = formatTime(t);
+  const pct = (t / instrumental.duration) * 100;
+  document.getElementById('progress').style.width = `${Math.max(0, Math.min(100, pct))}%`;
+
+  // ищем активный элемент (line или gap)
+  const allItems = Array.from(document.querySelectorAll('#lines li'));
+  let newIndex = null;
+
+  for (const li of allItems) {
+    const start = parseFloat(li.dataset.start);
+    const end = parseFloat(li.dataset.end);
+    if (t >= start && t < end) {
+      newIndex = parseInt(li.dataset.index);
+      break;
+    }
+  }
+
+  if (newIndex !== activeIndex) setActive(newIndex);
+});
+
+
+
+// клик по таймлайну
+timeline.addEventListener('click', e => {
+  const rect = timeline.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  if (instrumental.duration) instrumental.currentTime = (x / rect.width) * instrumental.duration;
+  hapticFeedback('change');
+});
+
+
+// пробел для play/pause
+window.addEventListener('keydown', e => {
+  if (e.code === 'Space') {
+    e.preventDefault();
+    if (instrumental.paused) instrumental.play();
+    else instrumental.pause();
+  }
+});
+
+
+
+
+// --- Работа с активной строчкой ---
+function setActive(idx) {
+  activeIndex = idx;
+
+  document.querySelectorAll('#lines li').forEach(li => li.classList.remove('active'));
+
+  if (idx === null) return;
+  const activeLi = document.querySelector(`#lines li[data-index='${idx}']`);
+  if (!activeLi) return;
+
+  activeLi.classList.add('active');
+
+  const liHeight = activeLi.offsetHeight;
+  const wrapRect = linesList.parentElement.getBoundingClientRect();
+  const centerY = wrapRect.height / 2;
+  const activeTop = activeLi.offsetTop;
+  const offset = centerY - (activeTop + liHeight / 2);
+  linesList.style.transform = `translateY(calc(${offset}px - (25 * var(--vw))))`;
+
+  console.log(`liHeight: ${liHeight}`)
+  console.log(`centerY: ${centerY}`)
+  console.log(`activeTop: ${activeTop}`)
+  console.log(`offset: ${offset}`)
+  console.log("-----")
+  // console.log(`liHeight: ${liHeight}`)
+  // console.log(`liHeight: ${liHeight}`)
+
+}
+
+
+
+
+// Перемотка на 10 сек
+document.querySelector('.back-10-sec').addEventListener('click', () => {
+  instrumental.currentTime = Math.max(0, instrumental.currentTime - 10);
+  hapticFeedback('change');
+})
+document.querySelector('.ahead-10-sec').addEventListener('click', () => {
+  instrumental.currentTime = Math.max(0, instrumental.currentTime + 10);
+  hapticFeedback('change');
+})
+
+
+// --- Конец воспроизведения ---
+instrumental.addEventListener('ended', () => {
+  playIcon.innerHTML = '<path d="M187.2 100.9C174.8 94.1 159.8 94.4 147.6 101.6C135.4 108.8 128 121.9 128 136L128 504C128 518.1 135.5 531.2 147.6 538.4C159.7 545.6 174.8 545.9 187.2 539.1L523.2 355.1C536 348.1 544 334.6 544 320C544 305.4 536 291.9 523.2 284.9L187.2 100.9z"></path>';
+  app.classList.add('not-playing');
+});
+
+
+
+
+// --- Парсер SRT ---
+function parseSRT(srtText) {
+  const blocks = srtText.trim().split(/\n\s*\n+/);
+  const out = [];
+
+  for (const block of blocks) {
+    const lines = block.split(/\n/).map(l => l.trim()).filter(Boolean);
+    if (lines.length >= 2) {
+      const timeLine = lines.find(l => l.includes('-->'));
+      const match = timeLine && timeLine.match(/(\d{2}:\d{2}:\d{2},\d{3})\s*--> (\d{2}:\d{2}:\d{2},\d{3})/);
+      if (match) {
+        const start = toSeconds(match[1]);
+        const end = toSeconds(match[2]);
+        const text = lines.slice(lines.indexOf(timeLine) + 1).join(' ');
+        out.push({ start, end, text });
+      }
+    }
+  }
+  return out;
+
+  function toSeconds(t) {
+    const [h, m, s, ms] = t.split(/[:,]/).map(Number);
+    return h * 3600 + m * 60 + s + ms / 1000;
+  }
+}
+
+
+
+
+
+
+
+function animateGapBars() {
+  const t = instrumental.currentTime;
+
+  document.querySelectorAll('#lines li.gap').forEach(li => {
+    const start = parseFloat(li.dataset.start);
+    const end = parseFloat(li.dataset.end);
+    const fill = li.querySelector('.gap-fill');
+    if (!fill) return;
+
+    if (t >= start && t <= end) {
+      const progress = ((t - start) / (end - start)) * 100;
+      fill.style.width = `${progress}%`;
+    } else if (t < start) {
+      fill.style.width = '0%';
+    } else if (t > end) {
+      fill.style.width = '100%';
+    }
+  });
+
+  requestAnimationFrame(animateGapBars);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
