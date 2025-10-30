@@ -88,7 +88,7 @@ body::before {
 
 .track-info div span:last-child {
   font-family: 'Sf Pro Display Regular', Arial, sans-serif;
-  font-size: calc(100 / 428 * 18 * var(--vw));
+  font-size: calc(100 / 428 * 14 * var(--vw));
   color: rgba(255, 255, 255, .5);
 }
 
@@ -295,4 +295,52 @@ body::before {
   left: 0;
   top: 0;
   transition: width 0.1s linear;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (min-width: 500px) {
+  :root {
+    --body-width: calc(100vh * 0.6);
+  }
+
+  body {
+    width: var(--body-width);
+  }
+
+  /* .tracks {
+    box-shadow: none;
+    border-radius: calc(100 / 428 * 16 * var(--vw));
+  }
+
+  body::before {
+    height: 100vh;
+  } */
+}
+
+@media (min-width: 700px) {
+  :root {
+    --body-width: calc(100vh * 0.70);
+  }
+
+  body {
+    width: var(--body-width);
+  }
 }
